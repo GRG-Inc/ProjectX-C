@@ -13,6 +13,7 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
+#include <ctype.h>
 
 using namespace::std;
 
@@ -54,7 +55,58 @@ private:
             }
         }
     }
-
+    
+    char corrispondenzaR(int indice) {
+        switch(indice){
+            case 1:
+                return 'A';
+            case 2:
+                return 'B';
+            case 3:
+                return 'C';
+            case 4:
+                return 'D';
+            case 5:
+                return 'E';
+            case 6:
+                return 'F';
+            case 7:
+                return 'G';
+            case 8:
+                return 'H';
+            case 9:
+                return 'I';
+            default:
+                throw;
+        }
+    }
+    
+    int corrispondenza(char indice) {
+        char x = toupper(indice);
+        switch(x){
+            case 'A':
+                return 1;
+            case 'B':
+                return 2;
+            case 'C':
+                return 3;
+            case 'D':
+                return 4;
+            case 'E':
+                return 5;
+            case 'F':
+                return 6;
+            case 'G':
+                return 7;
+            case 'H':
+                return 8;
+            case 'I':
+                return 9;	
+            default:
+                throw;
+        }
+    }
+    
 public:
     
     AI(){
@@ -65,16 +117,16 @@ public:
     }
     
     string generaStringaMossa(int i, int j, int k, int l, int m, int n, int o, int p){
-        StringBuilder sb = new StringBuilder();
-        sb.append(corrispondenzaR(i));
-        sb.append(j);
-        sb.append(corrispondenzaR(k));
-        sb.append(l);
-        sb.append(corrispondenzaR(m));
-        sb.append(n);
-        sb.append(corrispondenzaR(o));
-        sb.append(p);
-        return sb.toString();
+        string sb;
+        sb+corrispondenzaR(i);
+        sb+=j;
+        sb+=corrispondenzaR(k);
+        sb+=l;
+        sb+=corrispondenzaR(m);
+        sb+=n;
+        sb+=(corrispondenzaR(o));
+        sb+=(p);
+        return sb;
     }
     
     string generaProssimaMossa(Scacchiera s, string side, int d){
