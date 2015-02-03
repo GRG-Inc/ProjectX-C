@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "86"
             endingLineNumber = "86"
-            landmarkName = "aggiornaScacchiera(int origP1, int origP2, int origU1, int origU2, int destP1, int destP2, int destU1, int destU2)"
+            landmarkName = "attacca(int k, int n1, int j, int n2)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
