@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C92647271A81587E00B065A4 /* AI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C92647251A81587E00B065A4 /* AI.cpp */; };
-		C96480461A8147A000E98DA3 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C96480451A8147A000E98DA3 /* main.cpp */; };
+		C96480461A8147A000E98DA3 /* Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C96480451A8147A000E98DA3 /* Client.cpp */; };
 		C964804E1A8147C800E98DA3 /* Scacchiera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C964804C1A8147C800E98DA3 /* Scacchiera.cpp */; };
 /* End PBXBuildFile section */
 
@@ -28,7 +28,7 @@
 		C92647251A81587E00B065A4 /* AI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AI.cpp; sourceTree = "<group>"; };
 		C92647261A81587E00B065A4 /* AI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AI.h; sourceTree = "<group>"; };
 		C96480421A8147A000E98DA3 /* ProjectX */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ProjectX; sourceTree = BUILT_PRODUCTS_DIR; };
-		C96480451A8147A000E98DA3 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		C96480451A8147A000E98DA3 /* Client.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Client.cpp; sourceTree = "<group>"; };
 		C964804C1A8147C800E98DA3 /* Scacchiera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scacchiera.cpp; sourceTree = "<group>"; };
 		C964804D1A8147C800E98DA3 /* Scacchiera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scacchiera.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -63,7 +63,7 @@
 		C96480441A8147A000E98DA3 /* ProjectX */ = {
 			isa = PBXGroup;
 			children = (
-				C96480451A8147A000E98DA3 /* main.cpp */,
+				C96480451A8147A000E98DA3 /* Client.cpp */,
 				C964804C1A8147C800E98DA3 /* Scacchiera.cpp */,
 				C964804D1A8147C800E98DA3 /* Scacchiera.h */,
 				C92647251A81587E00B065A4 /* AI.cpp */,
@@ -128,7 +128,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C96480461A8147A000E98DA3 /* main.cpp in Sources */,
+				C96480461A8147A000E98DA3 /* Client.cpp in Sources */,
 				C964804E1A8147C800E98DA3 /* Scacchiera.cpp in Sources */,
 				C92647271A81587E00B065A4 /* AI.cpp in Sources */,
 			);
