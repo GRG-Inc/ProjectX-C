@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 GRG. All rights reserved.
 //
 
-#include "Scacchiera.h"
+
 #include <cmath>
 
 
@@ -30,9 +30,6 @@ private:
     int minColumn[10] = { 1, 1, 1, 1, 1, 1, 2, 3, 4, 5}; //da che colonna inizia la scacchiera per ogni riga compresa cornice
     int maxColumn[10]  = { 5, 5, 6, 7, 8, 9, 9, 9, 9, 9}; //a che colonna finisce la scacchiera per ogni riga compresa cornice
     char bianco=2, nero=3;
-    
-    typedef char (&array11x11)[11][11];
-
     
     char getOppSide(int i, int numericValue) {
         return (scacchiera[i][numericValue] == 2)? nero: bianco;

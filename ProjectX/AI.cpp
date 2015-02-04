@@ -6,14 +6,15 @@
 //  Copyright (c) 2015 GRG. All rights reserved.
 //
 
-#include "AI.h"
 #include <string>
-#include "Scacchiera.cpp"
+#include "Scacchiera.h"
 #include <unordered_map>
 #include <cassert>
 #include <cmath>
 #include <iostream>
 #include <ctype.h>
+#include <limits>
+#include <cstring>
 
 using namespace::std;
 static_assert(std::numeric_limits<float>::is_iec559, "IEEE 754 required");
@@ -28,7 +29,8 @@ private:
     const int minColumn[10] = { 1, 1, 1, 1, 1, 1, 2, 3, 4, 5}; //da che colonna inizia la scacchiera per ogni riga compresa cornice
     const int maxColumn[10] = { 5, 5, 6, 7, 8, 9, 9, 9, 9, 9}; //a che colonna finisce la scacchiera per ogni riga compresa cornice
     char direzioni[6] = {1,2,3,4,5,6};//N,NO,O,S,SE,E
-    unordered_map<int, int> distance;
+    //unordered_map<int, int> distance;
+    char distance[11][11][11][11];
     int dist;
     const char white=2, black=3;
     Scacchiera scacchiera;
@@ -41,7 +43,7 @@ private:
         return fmax(abs(col), abs(riga));
     }
     
-    void distanza(){
+   /* void distanza(){
         int dist;
         for(int i=0; i<11; i++){
             for(int j=0; j<11; j++){
@@ -56,7 +58,16 @@ private:
                 }
             }
         }
-    }
+    }*/
+
+    void distanza(){
+            int dist;
+            for(int i=0; i<11; i++)
+                for(int j=0; j<11; j++)
+                    for(int k=0; k<11; k++)
+                        for(int l=0; l<11;l++)
+                            distance[i][j][k][l]=calcolaDistanza(i,j,k,l);
+        }
     
     char corrispondenzaR(int indice) {
         switch(indice){
@@ -159,12 +170,14 @@ private:
             for(int i = 1; i<10; i++)
                 for(int j = minColumn[i]; j <= maxColumn[i]; j++){
                     if(scacc[i*11+j] == s1){
-                        unordered_map<int,int>::iterator got = distance.find (i*1000+j*100+5*10+5);
-                        centerDist += 1.5/((int)got->second + 1);
+                        //unordered_map<int,int>::iterator got = distance.find (i*1000+j*100+5*10+5);
+                        //centerDist += 1.5/((int)got->second + 1);
+                    	centerDist += 1.5/(distance[i][j][5][5])+1;
                         coesione += calcolaCoesione(scacc,i,j);
                     }else if(scacc[i*11+j] == s2){
-                        unordered_map<int,int>::iterator got = distance.find (i*1000+j*100+5*10+5);
-                        centerDist -= 5/((int)got->second + 1);
+                        //unordered_map<int,int>::iterator got = distance.find (i*1000+j*100+5*10+5);
+                        //centerDist -= 5/((int)got->second + 1);
+                    	centerDist -= 1.5/(distance[i][j][5][5])+1;
                         coesione -= 1.5*calcolaCoesione(scacc,i,j);
                     }
                 }
