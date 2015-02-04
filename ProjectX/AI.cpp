@@ -159,10 +159,12 @@ private:
             for(int i = 1; i<10; i++)
                 for(int j = minColumn[i]; j <= maxColumn[i]; j++){
                     if(scacc[i*11+j] == s1){
-                        centerDist += 1.5/((int)distance.get(i*1000+j*100+5*10+5) + 1);
+                        unordered_map<int,int>::iterator got = distance.find (i*1000+j*100+5*10+5);
+                        centerDist += 1.5/((int)got->second + 1);
                         coesione += calcolaCoesione(scacc,i,j);
                     }else if(scacc[i*11+j] == s2){
-                        centerDist -= 5/((int)distance.get(i*1000+j*100+5*10+5) + 1);
+                        unordered_map<int,int>::iterator got = distance.find (i*1000+j*100+5*10+5);
+                        centerDist -= 5/((int)got->second + 1);
                         coesione -= 1.5*calcolaCoesione(scacc,i,j);
                     }
                 }
