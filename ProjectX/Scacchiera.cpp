@@ -31,7 +31,8 @@ private:
     int maxColumn[10]  = { 5, 5, 6, 7, 8, 9, 9, 9, 9, 9}; //a che colonna finisce la scacchiera per ogni riga compresa cornice
     char bianco=2, nero=3;
     
-    
+    typedef char (&array11x11)[11][11];
+
     
     char getOppSide(int i, int numericValue) {
         return (scacchiera[i][numericValue] == 2)? nero: bianco;
@@ -194,7 +195,7 @@ public:
     }
     
     char* getScacchiera(){
-        return *scacchiera;
+        return &scacchiera[0][0];
     }
     
     bool esisteCella(int riga, int colonna){
