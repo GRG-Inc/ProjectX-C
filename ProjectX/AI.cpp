@@ -7,7 +7,7 @@
 //
 
 #include <string>
-#include "Scacchiera.h"
+#include "Scacchiera.cpp"
 #include <unordered_map>
 #include <cassert>
 #include <cmath>
