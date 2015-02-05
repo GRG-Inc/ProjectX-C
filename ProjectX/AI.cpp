@@ -189,9 +189,14 @@ private:
             Scacchiera scacFuturaClass;
             char *scac = scacchiera2.getScacchiera();
             char *scacFutura;
-         
-                #pragma omp parallel for
-        aleg: for(int i=1; i<10; i++){
+            for(int i=0; i<10; i++){
+            	for(int j=0; j<10; j++){
+            		cout << scac[i*11+j] + " ";
+            	}
+            	cout << "" <<endl;
+            }
+            #pragma omp parallel for
+            for(int i=1; i<10; i++){
             for(int j = minColumn[i]; j<=maxColumn[i]; j++){
                 if(scacc[i*11+j] == s1){
                     for(int k = 0; k < 6; k++){
