@@ -30,7 +30,18 @@ private:
         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };*/
 
 
-	short *scacchiera ;
+    short scacchiera[121]= {
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,
+        0, 2, 2, 1, 3, 3, 0, 0, 0, 0, 0 , // A
+        0, 2, 2, 2, 3, 3, 3, 0, 0, 0, 0 , // B
+        0, 1, 2, 2, 1, 3, 3, 1, 0, 0, 0 , // C
+        0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 , // D
+        0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 , // E
+        0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 , // F
+        0, 0, 0, 1, 3, 3, 1, 2, 2, 1, 0 , // G
+        0, 0, 0, 0, 3, 3, 3, 2, 2, 2, 0 , // H
+        0, 0, 0, 0, 0, 3, 3, 1, 2, 2, 0 , // I
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     
     int nereCatturate=0, biancheCatturate=0;//nereCatturate e' il numero di pedine perse da side1
     int minColumn[10] = { 1, 1, 1, 1, 1, 1, 2, 3, 4, 5}; //da che colonna inizia la scacchiera per ogni riga compresa cornice
@@ -179,19 +190,6 @@ public:
     }*/
     
     Scacchiera(){
-    	short scac[121]= {
-    			         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,
-    			         0, 2, 2, 1, 3, 3, 0, 0, 0, 0, 0 , // A
-    			         0, 2, 2, 2, 3, 3, 3, 0, 0, 0, 0 , // B
-    			         0, 1, 2, 2, 1, 3, 3, 1, 0, 0, 0 , // C
-    			         0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 , // D
-    			         0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 , // E
-    			         0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 , // F
-    			         0, 0, 0, 1, 3, 3, 1, 2, 2, 1, 0 , // G
-    			         0, 0, 0, 0, 3, 3, 3, 2, 2, 2, 0 , // H
-    			         0, 0, 0, 0, 0, 3, 3, 1, 2, 2, 0 , // I
-    			         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    	scacchiera=scac;
     }
 
     Scacchiera clona(){
@@ -367,11 +365,24 @@ public:
 int main()
 {
 Scacchiera s;
-//Scacchiera s1 = s.clona();
-short *ptr= s.getScacchiera();
+Scacchiera s1 = s;
+    s1.aggiornaScacchiera(1, 2, 1, 2, 1, 3, 1, 3);
+    short *ptr2 = s.getScacchiera();
+short *ptr= s1.getScacchiera();
+    for(int i=0; i<11; i++){
+        for(int j=0; j<11;j++){
+            std::cout << ptr2[i*11+j];
+            std::cout << " ";
+        }
+        std::cout << "" << std::endl;
+    }
+    
+    std::cout << "\n";
+
 for(int i=0; i<11; i++){
 	for(int j=0; j<11;j++){
-		std::cout << ptr[i*11+j] + " ";
+		std::cout << ptr[i*11+j];
+        std::cout << " ";
 	}
 	std::cout << "" << std::endl;
 }

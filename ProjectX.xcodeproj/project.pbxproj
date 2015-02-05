@@ -10,6 +10,7 @@
 		C92647271A81587E00B065A4 /* AI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C92647251A81587E00B065A4 /* AI.cpp */; };
 		C96480461A8147A000E98DA3 /* Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C96480451A8147A000E98DA3 /* Client.cpp */; };
 		C964804E1A8147C800E98DA3 /* Scacchiera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C964804C1A8147C800E98DA3 /* Scacchiera.cpp */; };
+		C98F00461A83907100C2280D /* boost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C98F00451A83907100C2280D /* boost.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +32,7 @@
 		C96480451A8147A000E98DA3 /* Client.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Client.cpp; sourceTree = "<group>"; };
 		C964804C1A8147C800E98DA3 /* Scacchiera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scacchiera.cpp; sourceTree = "<group>"; };
 		C964804D1A8147C800E98DA3 /* Scacchiera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scacchiera.h; sourceTree = "<group>"; };
+		C98F00451A83907100C2280D /* boost.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = boost.framework; path = ../boost/osx/framework/boost.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C98F00461A83907100C2280D /* boost.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,6 +50,7 @@
 		C96480391A8147A000E98DA3 = {
 			isa = PBXGroup;
 			children = (
+				C98F00451A83907100C2280D /* boost.framework */,
 				C96480441A8147A000E98DA3 /* ProjectX */,
 				C96480431A8147A000E98DA3 /* Products */,
 			);
@@ -214,6 +218,12 @@
 		C964804A1A8147A000E98DA3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/freakazoid/Documents/workspaceXcode/boost/osx/framework,
+				);
+				GCC_OPTIMIZATION_LEVEL = 3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -221,6 +231,11 @@
 		C964804B1A8147A000E98DA3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/freakazoid/Documents/workspaceXcode/boost/osx/framework,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
