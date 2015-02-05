@@ -121,7 +121,7 @@ public:
 					break;
 				}
 				else if(boost::starts_with(response, "YOUR_TURN")){
-					string move = ai.generaProssimaMossa(ai.getScacchiera(), colour, 3);
+					string move = ai.generaProssimaMossa(*ai.getScacchiera(), colour, 3);
 					char buffer[8];
 					move.copy(buffer, 8, 0);
 					int len = strlen(buffer);
@@ -152,8 +152,8 @@ int main()
 
 	//Client * client = new Client("127.0.0.1", "8901");
 	//client->play();
-	AI * ai = new AI();
-	string move = ai->generaProssimaMossa(ai->getScacchiera(), "Black", 3);
+        AI ai;
+	string move = ai.generaProssimaMossa(*ai.getScacchiera(), "Black", 3);
 	cout << move << endl;
 	return 0;
 	}

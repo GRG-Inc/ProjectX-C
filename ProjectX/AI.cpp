@@ -985,7 +985,6 @@ public:
      }*/
     
     void distanza(){
-        int dist;
         for(int i=0; i<11; i++)
             for(int j=0; j<11; j++)
                 for(int k=0; k<11; k++)
@@ -1068,4 +1067,4 @@ public:
 //        cout << "Pedine bianche mangiate " + to_string(ai.getScacchiera()->getBiancheCatturate()) << endl;
 //    }
 //    return 0;
-}
+//}
