@@ -16,6 +16,7 @@
 #include <boost/lexical_cast.hpp>
 #include <chrono>
 #include "AI.cpp"
+#include <locale>
 
 using namespace::std;
 
@@ -25,12 +26,13 @@ private:
 	AI ai;
 	 struct addrinfo host_info;       // The struct that getaddrinfo() fills up with data.
 	 struct addrinfo *host_info_list; // Pointer to the to the linked list of host_info's.
-	 ssize_t bytes_sent, bytes_received;
+	 ssize_t bytes_received;
 public:
 	int socketfd;
 
 	Client(string serverAddress, string port){
 		int status;
+		ai.distanza();
 
 
 			    // The MAN page of getaddrinfo() states "All  the other fields in the structure pointed
@@ -79,8 +81,8 @@ public:
 	}
 
 	void play(){
+		string move;
 		string colour;
-
 		//std::cout << "Waiting to receive data..." << std::endl;
 		char incomming_data_buffer[1000];
 		bytes_received = recv(socketfd, incomming_data_buffer, 1000, 0);
@@ -95,7 +97,7 @@ public:
 		string response(incomming_data_buffer);
 
 		if (boost::starts_with(response, "WELCOME"))
-		        colour = response.substr(8, 5);
+		        colour = response.substr(8,5);
 		std::cout << colour << std::endl;
 
 		try {
@@ -105,8 +107,14 @@ public:
 				if(boost::starts_with(response, "VALID_MOVE"))
 					cout << "Valid move, please wait" << endl;
 				else if(boost::starts_with(response, "OPPONENT_MOVE")){
-					ai.convertiStringaMossa(response.substr(14,8));
-					cout << "Opponent move: "+response.substr(14,8) << endl;
+					string opponentmove=response.substr(14,8);
+					std::locale loc;
+					std::toupper(opponentmove[0], loc);
+					std::toupper(opponentmove[2], loc);
+					std::toupper(opponentmove[4], loc);
+					std::toupper(opponentmove[6], loc);
+					ai.convertiStringaMossa(opponentmove);
+					cout << "Opponent move: "+opponentmove << endl;
 				}
 				else if(boost::starts_with(response, "VICTORY")){
 					cout << "You win" << endl;
@@ -121,20 +129,29 @@ public:
 					break;
 				}
 				else if(boost::starts_with(response, "YOUR_TURN")){
-					string move = ai.generaProssimaMossa(*ai.getScacchiera(), colour, 3);
-					char buffer[8];
-					move.copy(buffer, 8, 0);
-					int len = strlen(buffer);
-					bytes_sent = send(socketfd, buffer, len, 0);
-					cout << "Your move: "+ move << endl;
+					move = ai.generaProssimaMossa(*ai.getScacchiera(), colour, 3);
+					cout << "La tua mossa è: "+ move << endl;
+					string str="MOVE ";
+					str.append(move);
+					str.append("\n");
+					//char *msg = "MOVE B5C6C6D7\n";
+					   // int len;
+					    ssize_t bytes_sent;
+					    //len = strlen(str);
+					    bytes_sent = send(socketfd, str.c_str(), str.size(), 0);
+					    Scacchiera::stampaScacchiera(ai.getScacchiera()->getScacchiera());
 				}
 				else if(boost::starts_with(response, "TIMEOUT")){
 					cout << "Time out" << endl;
+					freeaddrinfo(host_info_list);
+							    close(socketfd);
 					break;
+					exit(-1);
 				}
 				else if(boost::starts_with(response, "MESSAGE")){
-					cout << response.substr(8) << endl;
+					cout << response << endl;
 				}
+
 			}
 		} catch (int e) {
 		    freeaddrinfo(host_info_list);
@@ -142,18 +159,15 @@ public:
 		    exit(-1);
 		}
 
-
 	}
 
 };
 
 int main()
 	{
-
-	//Client * client = new Client("127.0.0.1", "8901");
-	//client->play();
-        AI ai;
-	string move = ai.generaProssimaMossa(*ai.getScacchiera(), "Black", 3);
-	cout << move << endl;
+	Client * client = new Client("127.0.0.1", "8901");
+	client->play();
+	/*string move = ai.generaProssimaMossa(*ai.getScacchiera(), "Black", 3);
+	cout << move << endl;*/
 	return 0;
 	}

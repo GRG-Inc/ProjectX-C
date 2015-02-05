@@ -30,7 +30,7 @@ private:
         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };*/
 
 
-    short scacchiera[121]= {
+    mutable short scacchiera[121]= {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,
         0, 2, 2, 1, 3, 3, 0, 0, 0, 0, 0 , // A
         0, 2, 2, 2, 3, 3, 3, 0, 0, 0, 0 , // B
@@ -357,6 +357,20 @@ public:
                     attacca(origU1,origU2,destP1,destP2);
                 }
             }
+        }
+    }
+
+    static void stampaScacchiera(short *ptr){
+    	string x = " ABCDEFGHI ";
+    cout << "   1 2 3 4 5 6 7 8 9  " << endl;
+        for(int i=0; i<11; i++){
+            cout << x.at(i);
+            cout << " ";
+            for(int j=0; j<11;j++){
+                std::cout << ptr[i*11+j];
+                std::cout << " ";
+            }
+            std::cout << "" << std::endl;
         }
     }
 };

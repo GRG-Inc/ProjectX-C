@@ -15,6 +15,7 @@
 #include <ctype.h>
 #include <limits>
 #include <cstring>
+#include <boost/algorithm/string.hpp>
 
 using namespace::std;
 static_assert(std::numeric_limits<float>::is_iec559, "IEEE 754 required");
@@ -71,26 +72,44 @@ private:
     }
     
     int corrispondenza(char indice) {
-        char x = char(toupper(indice));
+        char x = char(tolower(indice));
         switch(x){
             case 'A':
                 return 1;
+            case 'a':
+            	return 1;
             case 'B':
                 return 2;
+            case 'b':
+            	return 2;
             case 'C':
                 return 3;
+            case 'c':
+            	return 3;
             case 'D':
                 return 4;
+            case 'd':
+            	return 4;
             case 'E':
                 return 5;
+            case 'e':
+            	return 5;
             case 'F':
                 return 6;
+            case 'f':
+            	return 6;
             case 'G':
                 return 7;
+            case 'g':
+            	return 7;
             case 'H':
                 return 8;
+            case 'h':
+            	return 8;
             case 'I':
-                return 9;	
+                return 9;
+            case 'i':
+            	return 9;
             default:
                 throw;
         }
@@ -118,19 +137,18 @@ private:
     double valutaMossa(Scacchiera scacchiera2, string side1, int depth, double alfabeta) { //FIXME
         //numMosse++;
         short *scacc = scacchiera2.getScacchiera();
-        char s1, s2;
+        short s1, s2;
         string side2;
-        if(side1.compare("White")){
+        if(boost::iequals(side1, "white")){
             s1 = white;
             s2 = black;
-            side2 = "Black";
+            side2 = "black";
         }
         else {
             s1 = black;
             s2 = white;
-            side2 = "White";
+            side2 = "white";
         }
-        
         if(depth == 0){
             //assegna valore a configurazione corrente
             double w1 = 1,w2 = 1,w3 = 1,w4 = 2; //pesi
@@ -172,7 +190,7 @@ private:
                     for(int k = 0; k < 6; k++){
                         if(direzioni[k]==1){//NORD
                             if(scacchiera2.esisteCella(i-1, j)){//FIXME
-                                if(scac[i-1*11+j] == 1){//una pedina
+                                if(scac[(i-1)*11+j] == 1){//una pedina
                                     scacFuturaClass = scacchiera2;
                                     scacFutura = scacFuturaClass.getScacchiera();
                                     scacFuturaClass.aggiornaScacchiera(i, j, i, j, i-1, j, i-1, j);
@@ -184,7 +202,7 @@ private:
                                     }
                                     if (alfabeta > bestValue)
                                         //break aleg;
-                                        goto hell;
+                                        {goto hell;}
                                     ab = bestValue;
                                 }else if(scac[(i-1)*11+j] == s1){// due pedine allineate
                                     if(scacchiera2.esisteCella(i-2, j)){
@@ -200,7 +218,7 @@ private:
                                             }
                                             if (alfabeta > bestValue)
                                                 //break aleg;
-                                                goto hell;
+                                                {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[(i-2)*11+j] == s2 && ((scacchiera2.esisteCella(i-3, j) && scac[(i-3)*11+j] == 1) || scac[(i-3)*11+j] == 0 )){//NOTA: if innestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
                                             scacFuturaClass = scacchiera2;
@@ -214,7 +232,7 @@ private:
                                             }
                                             if (alfabeta > bestValue)
                                                 //break aleg;
-                                                goto hell;
+                                                {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[(i-2)*11+j] == s1 ){//tre pedine allineate
                                             if(scacchiera2.esisteCella(i-3, j)){
@@ -230,7 +248,7 @@ private:
                                                     }
                                                     if (alfabeta > bestValue)
                                                         //break aleg;
-                                                        goto hell;
+                                                        {goto hell;}
                                                     ab = bestValue;
                                                 }else if(scac[(i-3)*11+j] == s2 && scacchiera2.esisteCella(i-4, j)){//c'e' avversario
                                                     if(scac[(i-4)*11+j] == 1){
@@ -245,7 +263,7 @@ private:
                                                         }
                                                         if (alfabeta > bestValue)
                                                             //break aleg;
-                                                            goto hell;
+                                                            {goto hell;}
                                                         ab = bestValue;
                                                     }else if(scac[(i-4)*11+j] == s2){
                                                         if(scacchiera2.esisteCella(i-5, j) && scac[(i-5)*11+j] == 1){
@@ -260,7 +278,7 @@ private:
                                                             }
                                                             if (alfabeta > bestValue)
                                                                 //break aleg;
-                                                                goto hell;
+                                                                {goto hell;}
                                                             ab = bestValue;
                                                         }else if(scac[(i-5)*11+j] == 0){
                                                             scacFuturaClass = scacchiera2;
@@ -274,7 +292,7 @@ private:
                                                             }
                                                             if (alfabeta > bestValue)
                                                                 //break aleg;
-                                                                goto hell;
+                                                                {goto hell;}
                                                             ab = bestValue;
                                                         }
                                                     }
@@ -290,7 +308,7 @@ private:
                                                     }
                                                     if (alfabeta > bestValue)
                                                         //break aleg;
-                                                        goto hell;
+                                                        {goto hell;}
                                                     ab = bestValue;
                                                 }
                                             }
@@ -313,7 +331,7 @@ private:
                                     }
                                     if (alfabeta > bestValue)
                                         //break aleg;
-                                        goto hell;
+                                        {goto hell;}
                                     ab = bestValue;
                                 }else if(scac[(i-1)*11+(j-1)] == s1){// due pedine allineate
                                     if(scacchiera2.esisteCella(i-2, j-2)){
@@ -329,7 +347,7 @@ private:
                                             }
                                             if (alfabeta > bestValue)
                                                 //break aleg;
-                                                goto hell;
+                                                {goto hell;}
                                             
                                             ab = bestValue;
                                         }else if(scac[(i-2)*11+(j-2)] == s2 && (scacchiera2.esisteCella(i-3, j-3) && (scac[(i-3)*11+(j-3)] == 1 || scac[(i-3)*11+(j-3)] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
@@ -344,7 +362,7 @@ private:
                                             }
                                             if (alfabeta > bestValue)
                                                 //break aleg;
-                                                goto hell;
+                                                {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[(i-2)*11+(j-2)] == s1 ){//tre pedine allineate
                                             if(scacchiera2.esisteCella(i-3, j-3)){
@@ -360,7 +378,7 @@ private:
                                                     }
                                                     if (alfabeta > bestValue)
                                                         //break aleg;
-                                                        goto hell;
+                                                        {goto hell;}
                                                     ab = bestValue;
                                                 }else if(scac[(i-3)*11+(j-3)] == s2 && scacchiera2.esisteCella(i-4, j-4)){//c'e' avversario
                                                     if(scac[(i-4)*11+(j-4)] == 1){
@@ -375,7 +393,7 @@ private:
                                                         }
                                                         if (alfabeta > bestValue)
                                                             //break aleg;
-                                                            goto hell;
+                                                            {goto hell;}
                                                         ab = bestValue;
                                                     }else if(scac[(i-4)*11+(j-4)] == s2){
                                                         if(scacchiera2.esisteCella(i-5, j-5) && scac[(i-5)*11+(j-5)] == 1){
@@ -390,7 +408,7 @@ private:
                                                             }
                                                             if (alfabeta > bestValue)
                                                                 //break aleg;
-                                                                goto hell;
+                                                                {goto hell;}
                                                             ab = bestValue;
                                                         }else if(scac[(i-5)*11+(j-5)] == 0){
                                                             scacFuturaClass = scacchiera2;
@@ -404,7 +422,7 @@ private:
                                                             }
                                                             if (alfabeta > bestValue)
                                                                 //break aleg;
-                                                                goto hell;
+                                                                {goto hell;}
                                                             ab = bestValue;
                                                         }
                                                     }
@@ -420,7 +438,7 @@ private:
                                                     }
                                                     if (alfabeta > bestValue)
                                                         //break aleg;
-                                                        goto hell;
+                                                        {goto hell;}
                                                     ab = bestValue;
                                                 }
                                             }
@@ -444,7 +462,7 @@ private:
                                     }
                                     if (alfabeta > bestValue)
                                         //break aleg;
-                                        goto hell;
+                                        {goto hell;}
                                     ab = bestValue;
                                 }else if(scac[i*11+j-1] == s1){// due pedine allineate
                                     if(scacchiera2.esisteCella(i, j-2)){
@@ -460,7 +478,7 @@ private:
                                             }
                                             if (alfabeta > bestValue)
                                                 //break aleg;
-                                                goto hell;
+                                                {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[i*11+j-2] == s2 && (scacchiera2.esisteCella(i, j-3) && (scac[i*11+j-3] == 1 || scac[i*11+j-3] == 0))){
                                             scacFuturaClass = scacchiera2;
@@ -474,7 +492,7 @@ private:
                                             }
                                             if (alfabeta > bestValue)
                                                 //break aleg;
-                                                goto hell;
+                                                {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[i*11+j-2] == s1 ){//tre pedine allineate
                                             if(scacchiera2.esisteCella(i, j-3)){
@@ -490,7 +508,7 @@ private:
                                                     }
                                                     if (alfabeta > bestValue)
                                                         //break aleg;
-                                                        goto hell;
+                                                        {goto hell;}
                                                     ab = bestValue;
                                                 }else if(scac[i*11+(j-3)] == s2 && scacchiera2.esisteCella(i, j-4)){//c'e' avversario
                                                     if(scac[i*11+(j-4)] == 1){
@@ -505,7 +523,7 @@ private:
                                                         }
                                                         if (alfabeta > bestValue)
                                                             //break aleg;
-                                                            goto hell;
+                                                            {goto hell;}
                                                         ab = bestValue;
                                                     }else if(scac[i*11+(j-4)] == s2){
                                                         if(scacchiera2.esisteCella(i, j-5) && scac[i*11+(j-5)] == 1){
@@ -520,7 +538,7 @@ private:
                                                             }
                                                             if (alfabeta > bestValue)
                                                                 //break aleg;
-                                                                goto hell;
+                                                                {goto hell;}
                                                             ab = bestValue;
                                                         }else if(scac[i*11+(j-5)] == 0){
                                                             scacFuturaClass = scacchiera2;
@@ -534,7 +552,7 @@ private:
                                                             }
                                                             if (alfabeta > bestValue)
                                                                 //break aleg;
-                                                                goto hell;
+                                                                {goto hell;}
                                                             ab = bestValue;
                                                         }
                                                     }
@@ -550,7 +568,7 @@ private:
                                                     }
                                                     if (alfabeta > bestValue)
                                                         //break aleg;
-                                                        goto hell;
+                                                        {goto hell;}
                                                     ab = bestValue;
                                                 }
                                             }
@@ -574,7 +592,7 @@ private:
                                     }
                                     if (alfabeta > bestValue)
                                         //break aleg;
-                                        goto hell;
+                                        {goto hell;}
                                     ab = bestValue;
                                 }else if(scac[(i+1)*11+j] == s1){// due pedine allineate
                                     if(scacchiera2.esisteCella(i+2, j)){
@@ -590,7 +608,7 @@ private:
                                             }
                                             if (alfabeta > bestValue)
                                                 //break aleg;
-                                                goto hell;
+                                                {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[(i+2)*11+j] == s2 && (scacchiera2.esisteCella(i+3, j) && (scac[(i+3)*11+j] == 1 || scac[(i+3)*11+j] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
                                             scacFuturaClass = scacchiera2;
@@ -604,7 +622,7 @@ private:
                                             }
                                             if (alfabeta > bestValue)
                                                 //break aleg;
-                                                goto hell;
+                                                {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[(i+2)*11+j] == s1 ){//tre pedine allineate
                                             if(scacchiera2.esisteCella(i+3, j)){
@@ -620,7 +638,7 @@ private:
                                                     }
                                                     if (alfabeta > bestValue)
                                                         //break aleg;
-                                                        goto hell;
+                                                        {goto hell;}
                                                     ab = bestValue;
                                                 }else if(scac[(i+3)*11+j] == s2 && scacchiera2.esisteCella(i+4, j)){//c'e' avversario
                                                     if(scac[(i+4)*11+j] == 1){
@@ -635,7 +653,7 @@ private:
                                                         }
                                                         if (alfabeta > bestValue)
                                                             //break aleg;
-                                                            goto hell;
+                                                            {goto hell;}
                                                         ab = bestValue;
                                                     }else if(scac[(i+4)*11+j] == s2){
                                                         if(scacchiera2.esisteCella(i+5, j) && scac[(i+5)*11+j] == 1){
@@ -650,7 +668,7 @@ private:
                                                             }
                                                             if (alfabeta > bestValue)
                                                                 //break aleg;
-                                                                goto hell;
+                                                                {goto hell;}
                                                             ab = bestValue;
                                                         }else if(scac[(i+5)*11+j] == 0){
                                                             scacFuturaClass = scacchiera2;
@@ -664,7 +682,7 @@ private:
                                                             }
                                                             if (alfabeta > bestValue)
                                                                 //break aleg;
-                                                                goto hell;
+                                                                {goto hell;}
                                                             ab = bestValue;
                                                         }
                                                     }
@@ -680,7 +698,7 @@ private:
                                                     }
                                                     if (alfabeta > bestValue)
                                                        // break aleg;
-                                                        goto hell;
+                                                        {goto hell;}
                                                     ab = bestValue;
                                                 }
                                             }	
@@ -703,7 +721,7 @@ private:
                                     }
                                     if (alfabeta > bestValue)
                                         //break aleg;
-                                        goto hell;
+                                        {goto hell;}
                                     ab = bestValue;
                                 }else if(scac[(i+1)*11+(j+1)] == s1){// due pedine allineate
                                     if(scacchiera2.esisteCella(i+2, j+2)){
@@ -719,7 +737,7 @@ private:
                                             }
                                             if (alfabeta > bestValue)
                                                 //break aleg;
-                                                goto hell;
+                                                {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[(i+2)*11+(j+2)] == s2 && (scacchiera2.esisteCella(i+3, j+3) && (scac[(i+3)*11+(j+3)] == 1 || scac[(i+3)*11+(j+3)] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
                                             scacFuturaClass = scacchiera2;
@@ -733,7 +751,7 @@ private:
                                             }
                                             if (alfabeta > bestValue)
                                                 //break aleg;
-                                                      goto hell;
+                                                      {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[(i+2)*11+(j+2)] == 1 ){//tre pedine allineate
                                             if(scacchiera2.esisteCella(i+3, j+3)){
@@ -749,7 +767,7 @@ private:
                                                     }
                                                     if (alfabeta > bestValue)
                                                         //break aleg;
-                                                      goto hell;
+                                                      {goto hell;}
                                                     ab = bestValue;
                                                 }else if(scac[(i+3)*11+(j+3)] == s2 && scacchiera2.esisteCella(i+4, j+4)){//c'e' avversario
                                                     if(scacFutura[(i+4)*11+(j+4)] == 1){
@@ -764,7 +782,7 @@ private:
                                                         }
                                                         if (alfabeta > bestValue)
                                                             //break aleg;
-                                                            goto hell;
+                                                            {goto hell;}
                                                         ab = bestValue;
                                                     }else if(scac[(i+4)*11+(j+4)] == s2){
                                                         if(scacchiera2.esisteCella(i+5, j+5) && scac[(i+5)*11+j+5] == 1){
@@ -779,7 +797,7 @@ private:
                                                             }
                                                             if (alfabeta > bestValue)
                                                                 //break aleg;
-                                                                goto hell;
+                                                                {goto hell;}
                                                             ab = bestValue;
                                                         }else if(scac[(i+5)*11+j+5] == 0){
                                                             scacFuturaClass = scacchiera2;
@@ -793,7 +811,7 @@ private:
                                                             }
                                                             if (alfabeta > bestValue)
                                                                 //break aleg;
-                                                                goto hell;
+                                                                {goto hell;}
                                                             ab = bestValue;
                                                         }
                                                     }
@@ -809,7 +827,7 @@ private:
                                                     }
                                                     if (alfabeta > bestValue)
                                                         //break aleg;
-                                                        goto hell;
+                                                        {goto hell;}
                                                     ab = bestValue;
                                                 }
                                             }
@@ -832,7 +850,7 @@ private:
                                     }
                                     if (alfabeta > bestValue)
                                         //break aleg;
-                                        goto hell;
+                                        {goto hell;}
                                     ab = bestValue;
                                 }else if(scac[i*11+j+1] == s1){// due pedine allineate
                                     if(scacchiera2.esisteCella(i, j+2)){
@@ -848,7 +866,7 @@ private:
                                             }
                                             if (alfabeta > bestValue)
                                                 //break aleg;
-                                                goto hell;
+                                                {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[i*11+j+2] == s2 && (scacchiera2.esisteCella(i, j+3) && (scac[i*11+j+3] == 1 || scac[i*11+j+3] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
                                             scacFuturaClass = scacchiera2;
@@ -862,7 +880,7 @@ private:
                                             }
                                             if (alfabeta > bestValue)
                                                 //break aleg;
-                                                goto hell;
+                                                {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[i*11+j+2] == 1 ){//tre pedine allineate
                                             if(scacchiera2.esisteCella(i, j+3)){
@@ -878,7 +896,7 @@ private:
                                                     }
                                                     if (alfabeta > bestValue)
                                                         //break aleg;
-                                                        goto hell;
+                                                        {goto hell;}
                                                     ab = bestValue;
                                                 }else if(scac[i*11+j+3] == s2 && scacchiera2.esisteCella(i, j+4)){//c'e' avversario
                                                     if(scac[i*11+j+4] == 1){
@@ -893,7 +911,7 @@ private:
                                                         }
                                                         if (alfabeta > bestValue)
                                                             //break aleg;
-                                                            goto hell;
+                                                            {goto hell;}
                                                         ab = bestValue;
                                                     }else if(scac[i*11+j+4] == s2){
                                                         if(scacchiera2.esisteCella(i, j+5) && scac[i*11+j+5] == 1){
@@ -908,7 +926,7 @@ private:
                                                             }
                                                             if (alfabeta > bestValue)
                                                                 //break aleg;
-                                                                goto hell;
+                                                                {goto hell;}
                                                             ab = bestValue;
                                                         }else if(scac[i*11+j+5] == 0){
                                                             scacFuturaClass = scacchiera2;
@@ -922,7 +940,7 @@ private:
                                                             }
                                                             if (alfabeta > bestValue)
                                                                 //break aleg;
-                                                                goto hell;
+                                                                {goto hell;}
                                                             ab = bestValue;
                                                         }
                                                     }
@@ -938,7 +956,7 @@ private:
                                                     }
                                                     if (alfabeta > bestValue)
                                                         //break aleg;
-                                                        goto hell;
+                                                        {goto hell;}
                                                     ab = bestValue;
                                                     
                                                 }
@@ -953,6 +971,8 @@ private:
             }
         }
         hell:
+		/*cout << mossaFinale << endl;
+		cout << to_string(bestValue) << endl;*/
             mossaFinale = mossa;
             return -bestValue;
         }
@@ -1022,12 +1042,13 @@ public:
         int n = vm[3]-'0';
         int o = vm[5]-'0';
         int p = vm[7]-'0';
+        cout << "Mossa di convertiStringaMossa() "+mossa << endl;
         scacchiera.aggiornaScacchiera(i,m,k,n,j,o,l,p);
     }
 };
 
 //int main(){
-//    
+//
 //    Scacchiera s;
 //    string mossa;
 //    string x = " ABCDEFGHI ";
@@ -1044,14 +1065,14 @@ public:
 //        std::cout << "" << std::endl;
 //    }
 //    cout << ptr <<endl;
-//    
-//    mossa = ai.generaProssimaMossa(s, "Black", 3);
+//
+//    mossa = ai.generaProssimaMossa(*ai.getScacchiera(), "Black", 3);
 //    cout << "Your move: "+mossa << endl;
 //    while(true){
 //    cout << "Inserisci mossa ";
 //    cin >> mossa;
 //    ai.convertiStringaMossa(mossa);
-//    
+//
 //        
 //    cout << "   1 2 3 4 5 6 7 8 9  " << endl;
 //    for(int i=0; i<11; i++){
