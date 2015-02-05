@@ -362,30 +362,30 @@ public:
 };
 
 
-int main()
-{
-Scacchiera s;
-    s.aggiornaScacchiera(1, 2, 1, 2, 1, 3, 1, 3);
-
-Scacchiera s1 = s;
-        short *ptr2 = s.getScacchiera();
-short *ptr= s1.getScacchiera();
-    for(int i=0; i<11; i++){
-        for(int j=0; j<11;j++){
-            std::cout << ptr2[i*11+j];
-            std::cout << " ";
-        }
-        std::cout << "" << std::endl;
-    }
-    
-    std::cout << "\n";
-
-for(int i=0; i<11; i++){
-	for(int j=0; j<11;j++){
-		std::cout << ptr[i*11+j];
-        std::cout << " ";
-	}
-	std::cout << "" << std::endl;
-}
-	return 0;
-}
+//int main()
+//{
+//Scacchiera s;
+//    s.aggiornaScacchiera(1, 2, 1, 2, 1, 3, 1, 3);
+//
+//Scacchiera s1 = s;
+//        short *ptr2 = s.getScacchiera();
+//short *ptr= s1.getScacchiera();
+//    for(int i=0; i<11; i++){
+//        for(int j=0; j<11;j++){
+//            std::cout << ptr2[i*11+j];
+//            std::cout << " ";
+//        }
+//        std::cout << "" << std::endl;
+//    }
+//    
+//    std::cout << "\n";
+//
+//for(int i=0; i<11; i++){
+//	for(int j=0; j<11;j++){
+//		std::cout << ptr[i*11+j];
+//        std::cout << " ";
+//	}
+//	std::cout << "" << std::endl;
+//}
+//	return 0;
+//}
