@@ -192,16 +192,16 @@ public:
     Scacchiera(){
     }
 
-    Scacchiera clona(){
-        Scacchiera clone = Scacchiera();
-        for(int i = 0 ; i < 11 ; i++)
-            for(int j = 0 ; j < 11 ; j++){
-                clone.scacchiera[i*11+j] = scacchiera[i*11+j];
-            }
-        clone.nereCatturate = nereCatturate;
-        clone.biancheCatturate = biancheCatturate;
-        return clone;
-    }
+//    Scacchiera clona(){
+//        Scacchiera clone = Scacchiera();
+//        for(int i = 0 ; i < 11 ; i++)
+//            for(int j = 0 ; j < 11 ; j++){
+//                clone.scacchiera[i*11+j] = scacchiera[i*11+j];
+//            }
+//        clone.nereCatturate = nereCatturate;
+//        clone.biancheCatturate = biancheCatturate;
+//        return clone;
+//    }
     
     int getBiancheCatturate(){
         return biancheCatturate;
