@@ -47,7 +47,7 @@ public:
 			    host_info.ai_socktype = SOCK_STREAM; // Use SOCK_STREAM for TCP or SOCK_DGRAM for UDP.
 
 			    // Now fill up the linked list of host_info structs with google's address information.
-			    status = getaddrinfo("127.0.0.1", "8901", &host_info, &host_info_list);
+			    status = getaddrinfo("192.168.94.128", "8901", &host_info, &host_info_list);
 			    // getaddrinfo returns 0 on succes, or some other value when an error occured.
 			    // (translated into human readable text by the gai_gai_strerror function).
 			    if (status != 0)  std::cout << "getaddrinfo error" << gai_strerror(status) ;
@@ -139,7 +139,7 @@ public:
 					    ssize_t bytes_sent;
 					    //len = strlen(str);
 					    bytes_sent = send(socketfd, str.c_str(), str.size(), 0);
-					    Scacchiera::stampaScacchiera(ai.getScacchiera()->getScacchiera());
+                    ai.convertiStringaMossa(move);
 				}
 				else if(boost::starts_with(response, "TIMEOUT")){
 					cout << "Time out" << endl;
@@ -148,7 +148,7 @@ public:
 					break;
 				}
 				else if(boost::starts_with(response, "MESSAGE")){
-					cout << response << endl;
+					cout << response.substr(8) << endl;
 				}
 
 			}
