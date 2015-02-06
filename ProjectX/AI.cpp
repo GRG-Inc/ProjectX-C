@@ -29,9 +29,9 @@ private:
     const short CostiCattura[14] = { 0, 8, 12, 16, 24, 36, 100, 100, 100, 100, 100, 100, 100, 100 };
     const int minColumn[10] = { 1, 1, 1, 1, 1, 1, 2, 3, 4, 5}; //da che colonna inizia la scacchiera per ogni riga compresa cornice
     const int maxColumn[10] = { 5, 5, 6, 7, 8, 9, 9, 9, 9, 9}; //a che colonna finisce la scacchiera per ogni riga compresa cornice
-    char direzioni[6] = {1,2,3,4,5,6};//N,NO,O,S,SE,E
+    short direzioni[6] = {1,2,3,4,5,6};//N,NO,O,S,SE,E
     //unordered_map<int, int> distance;
-    char distance[11][11][11][11];
+    short distance[11][11][11][11];
     int dist;
     const short white=2, black=3;
     Scacchiera scacchiera;

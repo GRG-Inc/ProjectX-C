@@ -146,7 +146,6 @@ public:
 					freeaddrinfo(host_info_list);
 							    close(socketfd);
 					break;
-					exit(-1);
 				}
 				else if(boost::starts_with(response, "MESSAGE")){
 					cout << response << endl;
@@ -169,5 +168,6 @@ int main()
 	client->play();
 	/*string move = ai.generaProssimaMossa(*ai.getScacchiera(), "Black", 3);
 	cout << move << endl;*/
+        delete client;
 	return 0;
 	}

@@ -46,7 +46,9 @@ private:
     int nereCatturate=0, biancheCatturate=0;//nereCatturate e' il numero di pedine perse da side1
     int minColumn[10] = { 1, 1, 1, 1, 1, 1, 2, 3, 4, 5}; //da che colonna inizia la scacchiera per ogni riga compresa cornice
     int maxColumn[10]  = { 5, 5, 6, 7, 8, 9, 9, 9, 9, 9}; //a che colonna finisce la scacchiera per ogni riga compresa cornice
-    int bianco=2, nero=3;
+    short bianco=2, nero=3;
+    
+    
     
     short getOppSide(int i, int numericValue) {
         return (scacchiera[i*11+numericValue] == 2)? nero: bianco;
@@ -55,7 +57,6 @@ private:
     short getSide(int i, int numericValue) {
         return (scacchiera[i*11+numericValue] == 2)? bianco: nero;
     }
-    
     
     void traslaDiagonale (int numeroPedine, int i, int n1, int j, int n2){
         short side = getSide(i, n1);
@@ -182,16 +183,7 @@ private:
     
     
 public:
-    ~Scacchiera(){
-    }
     
-    /*Scacchiera(const Scacchiera&){
-        
-    }*/
-    
-    Scacchiera(){
-    }
-
 //    Scacchiera clona(){
 //        Scacchiera clone = Scacchiera();
 //        for(int i = 0 ; i < 11 ; i++)
@@ -202,6 +194,7 @@ public:
 //        clone.biancheCatturate = biancheCatturate;
 //        return clone;
 //    }
+    
     
     int getBiancheCatturate(){
         return biancheCatturate;
@@ -240,7 +233,6 @@ public:
             numeroPedine = fabs(origP2 - origU2) + 1;
         else
             numeroPedine = fabs(origP1-origU1) + 1;
-        //System.out.println("numero di pedine: " + numeroPedine);
         int side1 = getSide(origP1, origP2);
         if(numeroPedine == 1){
             scacchiera[destP1*11+destP2] = side1;
@@ -359,10 +351,10 @@ public:
             }
         }
     }
-
+    
     static void stampaScacchiera(short *ptr){
-    	string x = " ABCDEFGHI ";
-    cout << "   1 2 3 4 5 6 7 8 9  " << endl;
+        string x = " ABCDEFGHI ";
+        cout << "   1 2 3 4 5 6 7 8 9  " << endl;
         for(int i=0; i<11; i++){
             cout << x.at(i);
             cout << " ";
@@ -373,7 +365,12 @@ public:
             std::cout << "" << std::endl;
         }
     }
+    
 };
+
+
+
+
 
 
 //int main()
@@ -391,7 +388,7 @@ public:
 //        }
 //        std::cout << "" << std::endl;
 //    }
-//    
+//
 //    std::cout << "\n";
 //
 //for(int i=0; i<11; i++){
