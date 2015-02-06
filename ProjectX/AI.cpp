@@ -134,7 +134,7 @@ private:
         return val;
     }
     
-    double valutaMossa(Scacchiera scacchiera2, string side1, int depth, double alfabeta) { //FIXME
+    double valutaMossa(Scacchiera& scacchiera2, string side1, int depth, double alfabeta) { //FIXME
         //numMosse++;
         short *scacc = scacchiera2.getScacchiera();
         short s1, s2;
@@ -180,7 +180,7 @@ private:
             //genera configurazione futura
             double bestValue = numeric_limits<double>::infinity(), currValue, ab = alfabeta;
             string m, mossa;
-            Scacchiera scacFuturaClass;
+            //Scacchiera scacFuturaClass;
             short *scac = scacchiera2.getScacchiera();
             short *scacFutura;
             #pragma omp parallel for
@@ -191,7 +191,7 @@ private:
                         if(direzioni[k]==1){//NORD
                             if(scacchiera2.esisteCella(i-1, j)){//FIXME
                                 if(scac[(i-1)*11+j] == 1){//una pedina
-                                    scacFuturaClass = scacchiera2;
+                                    Scacchiera scacFuturaClass = scacchiera2;
                                     scacFutura = scacFuturaClass.getScacchiera();
                                     scacFuturaClass.aggiornaScacchiera(i, j, i, j, i-1, j, i-1, j);
                                     m = generaStringaMossa(i, j, i, j, i-1, j, i-1, j);
@@ -207,7 +207,7 @@ private:
                                 }else if(scac[(i-1)*11+j] == s1){// due pedine allineate
                                     if(scacchiera2.esisteCella(i-2, j)){
                                         if(scac[(i-2)*11+j] == 1){// la cella controllata e' vuota quindi mi sposto li
-                                            scacFuturaClass = scacchiera2;
+                                            Scacchiera scacFuturaClass = scacchiera2;
                                             scacFutura = scacFuturaClass.getScacchiera();
                                             scacFuturaClass.aggiornaScacchiera(i-1, j, i, j, i-2, j, i-1, j);//indici invertiti per avere indici mossa ordinati correttaete per tutto il caso NORD
                                             m = generaStringaMossa(i-1, j, i, j, i-2, j, i-1, j);
@@ -221,7 +221,7 @@ private:
                                                 {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[(i-2)*11+j] == s2 && ((scacchiera2.esisteCella(i-3, j) && scac[(i-3)*11+j] == 1) || scac[(i-3)*11+j] == 0 )){//NOTA: if innestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
-                                            scacFuturaClass = scacchiera2;
+                                            Scacchiera scacFuturaClass = scacchiera2;
                                             scacFutura = scacFuturaClass.getScacchiera();
                                             scacFuturaClass.aggiornaScacchiera(i-1, j, i, j, i-2, j, i-1, j);
                                             m = generaStringaMossa(i-1, j, i, j, i-2, j, i-1, j);
@@ -237,7 +237,7 @@ private:
                                         }else if(scac[(i-2)*11+j] == s1 ){//tre pedine allineate
                                             if(scacchiera2.esisteCella(i-3, j)){
                                                 if(scac[(i-3)*11+j] == 1){//cella vuota
-                                                    scacFuturaClass = scacchiera2;
+                                                    Scacchiera scacFuturaClass = scacchiera2;
                                                     scacFutura = scacFuturaClass.getScacchiera();
                                                     scacFuturaClass.aggiornaScacchiera(i-2, j, i, j, i-3, j, i-1, j);
                                                     m = generaStringaMossa(i-2, j, i, j, i-3, j, i-1, j);
@@ -252,7 +252,7 @@ private:
                                                     ab = bestValue;
                                                 }else if(scac[(i-3)*11+j] == s2 && scacchiera2.esisteCella(i-4, j)){//c'e' avversario
                                                     if(scac[(i-4)*11+j] == 1){
-                                                        scacFuturaClass = scacchiera2;
+                                                        Scacchiera scacFuturaClass = scacchiera2;
                                                         scacFutura = scacFuturaClass.getScacchiera();
                                                         scacFuturaClass.aggiornaScacchiera(i-2, j, i, j, i-3, j, i-1, j);
                                                         m = generaStringaMossa(i-2, j, i, j, i-3, j, i-1, j);
@@ -267,7 +267,7 @@ private:
                                                         ab = bestValue;
                                                     }else if(scac[(i-4)*11+j] == s2){
                                                         if(scacchiera2.esisteCella(i-5, j) && scac[(i-5)*11+j] == 1){
-                                                            scacFuturaClass = scacchiera2;
+                                                            Scacchiera scacFuturaClass = scacchiera2;
                                                             scacFutura = scacFuturaClass.getScacchiera();
                                                             scacFuturaClass.aggiornaScacchiera(i-2, j, i, j, i-3, j, i-1, j);
                                                             m = generaStringaMossa(i-2, j, i, j, i-3, j, i-1, j);
@@ -281,7 +281,7 @@ private:
                                                                 {goto hell;}
                                                             ab = bestValue;
                                                         }else if(scac[(i-5)*11+j] == 0){
-                                                            scacFuturaClass = scacchiera2;
+                                                            Scacchiera scacFuturaClass = scacchiera2;
                                                             scacFutura = scacFuturaClass.getScacchiera();
                                                             scacFuturaClass.aggiornaScacchiera(i-2, j, i, j, i-3, j, i-1, j);
                                                             m = generaStringaMossa(i-2, j, i, j, i-3, j, i-1, j);
@@ -297,7 +297,7 @@ private:
                                                         }
                                                     }
                                                 }else if(scac[(i-3)*11+j] == s2 && scac[(i-4)*11+j] == 0){
-                                                    scacFuturaClass = scacchiera2;
+                                                    Scacchiera scacFuturaClass = scacchiera2;
                                                     scacFutura = scacFuturaClass.getScacchiera();
                                                     scacFuturaClass.aggiornaScacchiera(i-2, j, i, j, i-3, j, i-1, j);
                                                     m = generaStringaMossa(i-2, j, i, j, i-3, j, i-1, j);
@@ -320,7 +320,7 @@ private:
                             //NORD-OVEST
                             if(scacchiera2.esisteCella(i-1, j-1)){//FIXME
                                 if(scac[(i-1)*11+(j-1)] == 1){//una pedina
-                                    scacFuturaClass = scacchiera2;
+                                    Scacchiera scacFuturaClass = scacchiera2;
                                     scacFutura = scacFuturaClass.getScacchiera();
                                     scacFuturaClass.aggiornaScacchiera(i, j, i, j, i-1, j-1, i-1, j-1);
                                     m = generaStringaMossa(i, j, i, j, i-1, j-1, i-1, j-1);
@@ -336,7 +336,7 @@ private:
                                 }else if(scac[(i-1)*11+(j-1)] == s1){// due pedine allineate
                                     if(scacchiera2.esisteCella(i-2, j-2)){
                                         if(scac[(i-2)*11+(j-2)] == 1){// la cella controllata e' vuota
-                                            scacFuturaClass = scacchiera2;
+                                            Scacchiera scacFuturaClass = scacchiera2;
                                             scacFutura = scacFuturaClass.getScacchiera();
                                             scacFuturaClass.aggiornaScacchiera(i-1, j-1, i, j, i-2, j-2, i-1, j-1); //indici NO inertiti per lo stesso motivo del NORD
                                             m = generaStringaMossa(i-1, j-1, i, j, i-2, j-2, i-1, j-1);
@@ -351,7 +351,7 @@ private:
                                             
                                             ab = bestValue;
                                         }else if(scac[(i-2)*11+(j-2)] == s2 && (scacchiera2.esisteCella(i-3, j-3) && (scac[(i-3)*11+(j-3)] == 1 || scac[(i-3)*11+(j-3)] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
-                                            scacFuturaClass = scacchiera2;
+                                            Scacchiera scacFuturaClass = scacchiera2;
                                             scacFutura = scacFuturaClass.getScacchiera();
                                             scacFuturaClass.aggiornaScacchiera(i-1, j-1, i, j, i-2, j-2, i-1, j-1);
                                             m = generaStringaMossa(i-1, j-1, i, j, i-2, j-2, i-1, j-1);
@@ -367,7 +367,7 @@ private:
                                         }else if(scac[(i-2)*11+(j-2)] == s1 ){//tre pedine allineate
                                             if(scacchiera2.esisteCella(i-3, j-3)){
                                                 if(scac[(i-3)*11+(j-3)] == 1){//cella vuota
-                                                    scacFuturaClass = scacchiera2;
+                                                    Scacchiera scacFuturaClass = scacchiera2;
                                                     scacFutura = scacFuturaClass.getScacchiera();
                                                     scacFuturaClass.aggiornaScacchiera(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
                                                     m = generaStringaMossa(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
@@ -382,7 +382,7 @@ private:
                                                     ab = bestValue;
                                                 }else if(scac[(i-3)*11+(j-3)] == s2 && scacchiera2.esisteCella(i-4, j-4)){//c'e' avversario
                                                     if(scac[(i-4)*11+(j-4)] == 1){
-                                                        scacFuturaClass = scacchiera2;
+                                                        Scacchiera scacFuturaClass = scacchiera2;
                                                         scacFutura = scacFuturaClass.getScacchiera();
                                                         scacFuturaClass.aggiornaScacchiera(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
                                                         m = generaStringaMossa(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
@@ -397,7 +397,7 @@ private:
                                                         ab = bestValue;
                                                     }else if(scac[(i-4)*11+(j-4)] == s2){
                                                         if(scacchiera2.esisteCella(i-5, j-5) && scac[(i-5)*11+(j-5)] == 1){
-                                                            scacFuturaClass = scacchiera2;
+                                                            Scacchiera scacFuturaClass = scacchiera2;
                                                             scacFutura = scacFuturaClass.getScacchiera();
                                                             scacFuturaClass.aggiornaScacchiera(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
                                                             m = generaStringaMossa(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
@@ -411,7 +411,7 @@ private:
                                                                 {goto hell;}
                                                             ab = bestValue;
                                                         }else if(scac[(i-5)*11+(j-5)] == 0){
-                                                            scacFuturaClass = scacchiera2;
+                                                            Scacchiera scacFuturaClass = scacchiera2;
                                                             scacFutura = scacFuturaClass.getScacchiera();
                                                             scacFuturaClass.aggiornaScacchiera(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
                                                             m = generaStringaMossa(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
@@ -427,7 +427,7 @@ private:
                                                         }
                                                     }
                                                 }else if(scac[(i-3)*11+(j-3)] == s2 && scac[(i-4)*11+(j-4)] == 0){
-                                                    scacFuturaClass = scacchiera2;
+                                                    Scacchiera scacFuturaClass = scacchiera2;
                                                     scacFutura = scacFuturaClass.getScacchiera();
                                                     scacFuturaClass.aggiornaScacchiera(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
                                                     m = generaStringaMossa(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
@@ -451,7 +451,7 @@ private:
                             //OVEST
                             if(scacchiera2.esisteCella(i, j-1)){//FIXME
                                 if(scac[i*11+j-1] == 1){//una pedina
-                                    scacFuturaClass = scacchiera2;
+                                    Scacchiera scacFuturaClass = scacchiera2;
                                     scacFutura = scacFuturaClass.getScacchiera();
                                     scacFuturaClass.aggiornaScacchiera(i, j, i, j, i, j-1, i, j-1);
                                     m = generaStringaMossa(i, j, i, j, i, j-1, i, j-1);
@@ -467,7 +467,7 @@ private:
                                 }else if(scac[i*11+j-1] == s1){// due pedine allineate
                                     if(scacchiera2.esisteCella(i, j-2)){
                                         if(scac[i*11+j-2] == 1){// la cella controllata e' vuota
-                                            scacFuturaClass = scacchiera2;
+                                            Scacchiera scacFuturaClass = scacchiera2;
                                             scacFutura = scacFuturaClass.getScacchiera();
                                             scacFuturaClass.aggiornaScacchiera(i, j-1, i, j, i, j-2, i, j-1);
                                             m = generaStringaMossa(i, j-1, i, j, i, j-2, i, j-1);
@@ -481,7 +481,7 @@ private:
                                                 {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[i*11+j-2] == s2 && (scacchiera2.esisteCella(i, j-3) && (scac[i*11+j-3] == 1 || scac[i*11+j-3] == 0))){
-                                            scacFuturaClass = scacchiera2;
+                                            Scacchiera scacFuturaClass = scacchiera2;
                                             scacFutura = scacFuturaClass.getScacchiera();
                                             scacFuturaClass.aggiornaScacchiera(i, j-1, i, j, i, j-2, i, j-1);
                                             m = generaStringaMossa(i, j-1, i, j, i, j-2, i, j-1);
@@ -497,7 +497,7 @@ private:
                                         }else if(scac[i*11+j-2] == s1 ){//tre pedine allineate
                                             if(scacchiera2.esisteCella(i, j-3)){
                                                 if(scac[i*11+j-3] == 1){//cella vuota
-                                                    scacFuturaClass = scacchiera2;
+                                                    Scacchiera scacFuturaClass = scacchiera2;
                                                     scacFutura = scacFuturaClass.getScacchiera();
                                                     scacFuturaClass.aggiornaScacchiera(i, j-2, i, j, i, j-3, i, j-1);
                                                     m = generaStringaMossa(i, j-2, i, j, i, j-3, i, j-1);
@@ -512,7 +512,7 @@ private:
                                                     ab = bestValue;
                                                 }else if(scac[i*11+(j-3)] == s2 && scacchiera2.esisteCella(i, j-4)){//c'e' avversario
                                                     if(scac[i*11+(j-4)] == 1){
-                                                        scacFuturaClass = scacchiera2;
+                                                        Scacchiera scacFuturaClass = scacchiera2;
                                                         scacFutura = scacFuturaClass.getScacchiera();
                                                         scacFuturaClass.aggiornaScacchiera(i, j-2, i, j, i, j-3, i, j-1);// da controllare
                                                         m = generaStringaMossa(i, j-2, i, j, i, j-3, i, j-1);
@@ -527,7 +527,7 @@ private:
                                                         ab = bestValue;
                                                     }else if(scac[i*11+(j-4)] == s2){
                                                         if(scacchiera2.esisteCella(i, j-5) && scac[i*11+(j-5)] == 1){
-                                                            scacFuturaClass = scacchiera2;
+                                                            Scacchiera scacFuturaClass = scacchiera2;
                                                             scacFutura = scacFuturaClass.getScacchiera();
                                                             scacFuturaClass.aggiornaScacchiera(i, j-2, i, j, i, j-3, i, j-1);// da controllare, la pedina avversaria non viene toccata
                                                             m = generaStringaMossa(i, j-2, i, j, i, j-3, i, j-1);
@@ -541,7 +541,7 @@ private:
                                                                 {goto hell;}
                                                             ab = bestValue;
                                                         }else if(scac[i*11+(j-5)] == 0){
-                                                            scacFuturaClass = scacchiera2;
+                                                            Scacchiera scacFuturaClass = scacchiera2;
                                                             scacFutura = scacFuturaClass.getScacchiera();
                                                             scacFuturaClass.aggiornaScacchiera(i, j-2, i, j, i, j-3, i, j-1);// da controllare, la pedina avversaria non viene toccata
                                                             m = generaStringaMossa(i, j-2, i, j, i, j-3, i, j-1);
@@ -557,7 +557,7 @@ private:
                                                         }
                                                     }
                                                 }else if(scac[i*11+(j-3)] == s2 && scac[i*11+(j-4)] == 0){
-                                                    scacFuturaClass = scacchiera2;
+                                                    Scacchiera scacFuturaClass = scacchiera2;
                                                     scacFutura = scacFuturaClass.getScacchiera();
                                                     scacFuturaClass.aggiornaScacchiera(i, j-2, i, j, i, j-3, i, j-1);// da controllare
                                                     m = generaStringaMossa(i, j-2, i, j, i, j-3, i, j-1);
@@ -581,7 +581,7 @@ private:
                             //SUD
                             if(scacchiera2.esisteCella(i+1, j)){//FIXME
                                 if(scac[(i+1)*11+j] == 1){//una pedina
-                                    scacFuturaClass = scacchiera2;
+                                    Scacchiera scacFuturaClass = scacchiera2;
                                     scacFutura = scacFuturaClass.getScacchiera();
                                     scacFuturaClass.aggiornaScacchiera(i, j, i, j, i+1, j, i+1, j);
                                     m = generaStringaMossa(i, j, i, j, i+1, j, i+1, j);
@@ -597,7 +597,7 @@ private:
                                 }else if(scac[(i+1)*11+j] == s1){// due pedine allineate
                                     if(scacchiera2.esisteCella(i+2, j)){
                                         if(scac[(i+2)*11+j] == 1){// la cella controllata e' vuota quindi mi sposto li
-                                            scacFuturaClass = scacchiera2;
+                                           Scacchiera scacFuturaClass = scacchiera2;
                                             scacFutura = scacFuturaClass.getScacchiera();
                                             scacFuturaClass.aggiornaScacchiera(i, j, i+1, j, i+1, j, i+2, j);// da controllare
                                             m = generaStringaMossa(i, j, i+1, j, i+1, j, i+2, j);
@@ -611,7 +611,7 @@ private:
                                                 {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[(i+2)*11+j] == s2 && (scacchiera2.esisteCella(i+3, j) && (scac[(i+3)*11+j] == 1 || scac[(i+3)*11+j] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
-                                            scacFuturaClass = scacchiera2;
+                                           Scacchiera scacFuturaClass = scacchiera2;
                                             scacFutura = scacFuturaClass.getScacchiera();
                                             scacFuturaClass.aggiornaScacchiera(i, j, i+1, j, i+1, j, i+2, j);// da controllare, la pedina avversaria non viene toccata
                                             m = generaStringaMossa(i, j, i+1, j, i+1, j, i+2, j);
@@ -627,7 +627,7 @@ private:
                                         }else if(scac[(i+2)*11+j] == s1 ){//tre pedine allineate
                                             if(scacchiera2.esisteCella(i+3, j)){
                                                 if(scac[(i+3)*11+j] == 1){//cella vuota
-                                                    scacFuturaClass = scacchiera2;
+                                                   Scacchiera scacFuturaClass = scacchiera2;
                                                     scacFutura = scacFuturaClass.getScacchiera();
                                                     scacFuturaClass.aggiornaScacchiera(i, j, i+2, j, i+1, j, i+3, j);// da controllare
                                                     m = generaStringaMossa(i, j, i+2, j, i+1, j, i+3, j);
@@ -642,7 +642,7 @@ private:
                                                     ab = bestValue;
                                                 }else if(scac[(i+3)*11+j] == s2 && scacchiera2.esisteCella(i+4, j)){//c'e' avversario
                                                     if(scac[(i+4)*11+j] == 1){
-                                                        scacFuturaClass = scacchiera2;
+                                                       Scacchiera scacFuturaClass = scacchiera2;
                                                         scacFutura = scacFuturaClass.getScacchiera();
                                                         scacFuturaClass.aggiornaScacchiera(i, j, i+2, j, i+1, j, i+3, j);// da controllare
                                                         m = generaStringaMossa(i, j, i+2, j, i+1, j, i+3, j);
@@ -657,7 +657,7 @@ private:
                                                         ab = bestValue;
                                                     }else if(scac[(i+4)*11+j] == s2){
                                                         if(scacchiera2.esisteCella(i+5, j) && scac[(i+5)*11+j] == 1){
-                                                            scacFuturaClass = scacchiera2;
+                                                           Scacchiera scacFuturaClass = scacchiera2;
                                                             scacFutura = scacFuturaClass.getScacchiera();
                                                             scacFuturaClass.aggiornaScacchiera(i, j, i+2, j, i+1, j, i+3, j);// da controllare, la pedina avversaria non viene toccata
                                                             m = generaStringaMossa(i, j, i+2, j, i+1, j, i+3, j);
@@ -671,7 +671,7 @@ private:
                                                                 {goto hell;}
                                                             ab = bestValue;
                                                         }else if(scac[(i+5)*11+j] == 0){
-                                                            scacFuturaClass = scacchiera2;
+                                                           Scacchiera scacFuturaClass = scacchiera2;
                                                             scacFutura = scacFuturaClass.getScacchiera();
                                                             scacFuturaClass.aggiornaScacchiera(i, j, i+2, j, i+1, j, i+3, j);// da controllare, la pedina avversaria non viene toccata
                                                             m = generaStringaMossa(i, j, i+2, j, i+1, j, i+3, j);
@@ -687,7 +687,7 @@ private:
                                                         }
                                                     }
                                                 }else if(scac[(i+3)*11+j] == s2 && scac[(i+4)*11+j] == 0){
-                                                    scacFuturaClass = scacchiera2;
+                                                   Scacchiera scacFuturaClass = scacchiera2;
                                                     scacFutura = scacFuturaClass.getScacchiera();
                                                     scacFuturaClass.aggiornaScacchiera(i, j, i+2, j, i+1, j, i+3, j);// da controllare
                                                     m = generaStringaMossa(i, j, i+2, j, i+1, j, i+3, j);
@@ -710,7 +710,7 @@ private:
                             //SUD-EST
                             if(scacchiera2.esisteCella(i+1, j+1)){//FIXME
                                 if(scac[(i+1)*11+(j+1)] == 1){//una pedina
-                                    scacFuturaClass = scacchiera2;
+                                   Scacchiera scacFuturaClass = scacchiera2;
                                     scacFutura = scacFuturaClass.getScacchiera();
                                     scacFuturaClass.aggiornaScacchiera(i, j, i, j, i+1, j+1, i+1, j+1);
                                     m = generaStringaMossa(i, j, i, j, i+1, j+1, i+1, j+1);
@@ -725,7 +725,7 @@ private:
                                     ab = bestValue;
                                 }else if(scac[(i+1)*11+(j+1)] == s1){// due pedine allineate
                                     if(scacchiera2.esisteCella(i+2, j+2)){
-                                        scacFuturaClass = scacchiera2;
+                                       Scacchiera scacFuturaClass = scacchiera2;
                                         scacFutura = scacFuturaClass.getScacchiera();
                                         if(scac[(i+2)*11+(j+2)] == 1){// la cella controllata e' vuota quindi mi sposto li'
                                             scacFuturaClass.aggiornaScacchiera(i, j, i+1, j+1, i+1, j+1, i+2, j+2);// da controllare
@@ -740,7 +740,7 @@ private:
                                                 {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[(i+2)*11+(j+2)] == s2 && (scacchiera2.esisteCella(i+3, j+3) && (scac[(i+3)*11+(j+3)] == 1 || scac[(i+3)*11+(j+3)] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
-                                            scacFuturaClass = scacchiera2;
+                                           Scacchiera scacFuturaClass = scacchiera2;
                                             scacFutura = scacFuturaClass.getScacchiera();
                                             scacFuturaClass.aggiornaScacchiera(i, j, i+1, j+1, i+1, j+1, i+2, j+2);// da controllare, la pedina avversaria non viene toccata
                                             m = generaStringaMossa(i, j, i+1, j+1, i+1, j+1, i+2, j+2);
@@ -756,7 +756,7 @@ private:
                                         }else if(scac[(i+2)*11+(j+2)] == 1 ){//tre pedine allineate
                                             if(scacchiera2.esisteCella(i+3, j+3)){
                                                 if(scac[(i+3)*11+(j+3)] == s1){//cella vuota
-                                                    scacFuturaClass = scacchiera2;
+                                                   Scacchiera scacFuturaClass = scacchiera2;
                                                     scacFutura = scacFuturaClass.getScacchiera();
                                                     scacFuturaClass.aggiornaScacchiera(i, j, i+2, j+2, i+1, j+1, i+3, j+3);// da controllare
                                                     m = generaStringaMossa(i, j, i+2, j+2, i+1, j+1, i+3, j+3);
@@ -786,7 +786,7 @@ private:
                                                         ab = bestValue;
                                                     }else if(scac[(i+4)*11+(j+4)] == s2){
                                                         if(scacchiera2.esisteCella(i+5, j+5) && scac[(i+5)*11+j+5] == 1){
-                                                            scacFuturaClass = scacchiera2;
+                                                           Scacchiera scacFuturaClass = scacchiera2;
                                                             scacFutura = scacFuturaClass.getScacchiera();
                                                             scacFuturaClass.aggiornaScacchiera(i, j, i+2, j+2, i+1, j+1, i+3, j+3);// da controllare, la pedina avversaria non viene toccata
                                                             m = generaStringaMossa(i, j, i+2, j+2, i+1, j+1, i+3, j+3);
@@ -800,7 +800,7 @@ private:
                                                                 {goto hell;}
                                                             ab = bestValue;
                                                         }else if(scac[(i+5)*11+j+5] == 0){
-                                                            scacFuturaClass = scacchiera2;
+                                                           Scacchiera scacFuturaClass = scacchiera2;
                                                             scacFutura = scacFuturaClass.getScacchiera();
                                                             scacFuturaClass.aggiornaScacchiera(i, j, i+2, j+2, i+1, j+1, i+3, j+3);// da controllare, la pedina avversaria non viene toccata
                                                             m = generaStringaMossa(i, j, i+2, j+2, i+1, j+1, i+3, j+3);
@@ -816,7 +816,7 @@ private:
                                                         }
                                                     }
                                                 }else if(scac[(i+3)*11+j+3] == s2 && scac[(i+4)*11+j+4] == 0){
-                                                    scacFuturaClass = scacchiera2;
+                                                   Scacchiera scacFuturaClass = scacchiera2;
                                                     scacFutura = scacFuturaClass.getScacchiera();
                                                     scacFuturaClass.aggiornaScacchiera(i, j, i+2, j+2, i+1, j+1, i+3, j+3);// da controllare
                                                     m = generaStringaMossa(i, j, i+2, j+2, i+1, j+1, i+3, j+3);
@@ -839,7 +839,7 @@ private:
                             //EST
                             if(scacchiera2.esisteCella(i, j+1)){//FIXME
                                 if(scac[i*11+j+1] == 1){//una pedina
-                                    scacFuturaClass = scacchiera2;
+                                   Scacchiera scacFuturaClass = scacchiera2;
                                     scacFutura = scacFuturaClass.getScacchiera();
                                     scacFuturaClass.aggiornaScacchiera(i, j, i, j, i, j+1, i, j+1);
                                     m = generaStringaMossa(i, j, i, j, i, j+1, i, j+1);
@@ -855,7 +855,7 @@ private:
                                 }else if(scac[i*11+j+1] == s1){// due pedine allineate
                                     if(scacchiera2.esisteCella(i, j+2)){
                                         if(scac[i*11+j+2] == 1){// la cella controllata e' vuota quindi mi sposto li'
-                                            scacFuturaClass = scacchiera2;
+                                           Scacchiera scacFuturaClass = scacchiera2;
                                             scacFutura = scacFuturaClass.getScacchiera();
                                             scacFuturaClass.aggiornaScacchiera(i, j, i, j+1, i, j+1, i, j+2);// da controllare
                                             m = generaStringaMossa(i, j, i, j+1, i, j+1, i, j+2);
@@ -869,7 +869,7 @@ private:
                                                 {goto hell;}
                                             ab = bestValue;
                                         }else if(scac[i*11+j+2] == s2 && (scacchiera2.esisteCella(i, j+3) && (scac[i*11+j+3] == 1 || scac[i*11+j+3] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
-                                            scacFuturaClass = scacchiera2;
+                                           Scacchiera scacFuturaClass = scacchiera2;
                                             scacFutura = scacFuturaClass.getScacchiera();
                                             scacFuturaClass.aggiornaScacchiera(i, j, i, j+1, i, j+1, i, j+2);// da controllare, la pedina avversaria non viene toccata
                                             m = generaStringaMossa(i, j, i, j+1, i, j+1, i, j+2);
@@ -885,7 +885,7 @@ private:
                                         }else if(scac[i*11+j+2] == 1 ){//tre pedine allineate
                                             if(scacchiera2.esisteCella(i, j+3)){
                                                 if(scac[i*11+j-3] == s1){//cella vuota
-                                                    scacFuturaClass = scacchiera2;
+                                                   Scacchiera scacFuturaClass = scacchiera2;
                                                     scacFutura = scacFuturaClass.getScacchiera();
                                                     scacFuturaClass.aggiornaScacchiera(i, j, i, j+2, i, j+1, i, j+3);// da controllare
                                                     m = generaStringaMossa(i, j, i, j+2, i, j+1, i, j+3);
@@ -900,7 +900,7 @@ private:
                                                     ab = bestValue;
                                                 }else if(scac[i*11+j+3] == s2 && scacchiera2.esisteCella(i, j+4)){//c'e' avversario
                                                     if(scac[i*11+j+4] == 1){
-                                                        scacFuturaClass = scacchiera2;
+                                                       Scacchiera scacFuturaClass = scacchiera2;
                                                         scacFutura = scacFuturaClass.getScacchiera();
                                                         scacFuturaClass.aggiornaScacchiera(i, j, i, j+2, i, j+1, i, j+3);// da controllare
                                                         m = generaStringaMossa(i, j, i, j+2, i, j+1, i, j+3);
@@ -915,7 +915,7 @@ private:
                                                         ab = bestValue;
                                                     }else if(scac[i*11+j+4] == s2){
                                                         if(scacchiera2.esisteCella(i, j+5) && scac[i*11+j+5] == 1){
-                                                            scacFuturaClass = scacchiera2;
+                                                           Scacchiera scacFuturaClass = scacchiera2;
                                                             scacFutura = scacFuturaClass.getScacchiera();
                                                             scacFuturaClass.aggiornaScacchiera(i, j, i, j+2, i, j+1, i, j+3);// da controllare, la pedina avversaria non viene toccata
                                                             m = generaStringaMossa(i, j, i, j+2, i, j+1, i, j+3);
@@ -929,7 +929,7 @@ private:
                                                                 {goto hell;}
                                                             ab = bestValue;
                                                         }else if(scac[i*11+j+5] == 0){
-                                                            scacFuturaClass = scacchiera2;
+                                                           Scacchiera scacFuturaClass = scacchiera2;
                                                             scacFutura = scacFuturaClass.getScacchiera();
                                                             scacFuturaClass.aggiornaScacchiera(i, j, i, j+2, i, j+1, i, j+3);// da controllare, la pedina avversaria non viene toccata
                                                             m = generaStringaMossa(i, j, i, j+2, i, j+1, i, j+3);
@@ -945,7 +945,7 @@ private:
                                                         }
                                                     }
                                                 }else if(scac[i*11+j+3] == s2 && scac[i*11+j+4] == 0){
-                                                    scacFuturaClass = scacchiera2;
+                                                   Scacchiera scacFuturaClass = scacchiera2;
                                                     scacFutura = scacFuturaClass.getScacchiera();
                                                     scacFuturaClass.aggiornaScacchiera(i, j, i, j+2, i, j+1, i, j+3);// da controllare
                                                     m = generaStringaMossa(i, j, i, j+2, i, j+1, i, j+3);
