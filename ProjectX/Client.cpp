@@ -26,7 +26,7 @@ private:
 	AI ai;
 	 struct addrinfo host_info;       // The struct that getaddrinfo() fills up with data.
 	 struct addrinfo *host_info_list; // Pointer to the to the linked list of host_info's.
-	 ssize_t bytes_received;
+	 ssize_t bytes_received, bytes_sent;
 public:
 	int socketfd;
 
@@ -47,7 +47,7 @@ public:
 			    host_info.ai_socktype = SOCK_STREAM; // Use SOCK_STREAM for TCP or SOCK_DGRAM for UDP.
 
 			    // Now fill up the linked list of host_info structs with google's address information.
-			    status = getaddrinfo("192.168.94.128", "8901", &host_info, &host_info_list);
+			    status = getaddrinfo("127.0.0.1", "8901", &host_info, &host_info_list);
 			    // getaddrinfo returns 0 on succes, or some other value when an error occured.
 			    // (translated into human readable text by the gai_gai_strerror function).
 			    if (status != 0)  std::cout << "getaddrinfo error" << gai_strerror(status) ;
@@ -108,11 +108,6 @@ public:
 					cout << "Valid move, please wait" << endl;
 				else if(boost::starts_with(response, "OPPONENT_MOVE")){
 					string opponentmove=response.substr(14,8);
-					std::locale loc;
-					std::toupper(opponentmove[0], loc);
-					std::toupper(opponentmove[2], loc);
-					std::toupper(opponentmove[4], loc);
-					std::toupper(opponentmove[6], loc);
 					ai.convertiStringaMossa(opponentmove);
 					cout << "Opponent move: "+opponentmove << endl;
 				}
@@ -136,15 +131,15 @@ public:
 					str.append("\n");
 					//char *msg = "MOVE B5C6C6D7\n";
 					   // int len;
-					    ssize_t bytes_sent;
 					    //len = strlen(str);
 					    bytes_sent = send(socketfd, str.c_str(), str.size(), 0);
                     ai.convertiStringaMossa(move);
+                    Scacchiera::stampaScacchiera(ai.getScacchiera()->getScacchiera());
 				}
 				else if(boost::starts_with(response, "TIMEOUT")){
 					cout << "Time out" << endl;
-					freeaddrinfo(host_info_list);
-							    close(socketfd);
+					//freeaddrinfo(host_info_list);
+							    //close(socketfd);
 					break;
 				}
 				else if(boost::starts_with(response, "MESSAGE")){
@@ -168,6 +163,6 @@ int main()
 	client->play();
 	/*string move = ai.generaProssimaMossa(*ai.getScacchiera(), "Black", 3);
 	cout << move << endl;*/
-        delete client;
+        //delete client;
 	return 0;
 	}
