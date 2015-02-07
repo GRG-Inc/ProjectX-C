@@ -30,8 +30,8 @@ private:
     const int minColumn[10] = { 1, 1, 1, 1, 1, 1, 2, 3, 4, 5}; //da che colonna inizia la scacchiera per ogni riga compresa cornice
     const int maxColumn[10] = { 5, 5, 6, 7, 8, 9, 9, 9, 9, 9}; //a che colonna finisce la scacchiera per ogni riga compresa cornice
     short direzioni[6] = {1,2,3,4,5,6};//N,NO,O,S,SE,E
-    //unordered_map<int, int> distance;
-    int distance[11][11][11][11];
+    unordered_map<int, int> distance;
+    //int distance[11][11][11][11];
     int dist;
     const short white=2, black=3;
     Scacchiera scacchiera;
@@ -116,7 +116,7 @@ private:
         return val;
     }
     
-    double valutaMossa(Scacchiera& scacchiera2, string side1, int depth, double alfabeta) {
+    double valutaMossa(Scacchiera scacchiera2, string side1, int depth, double alfabeta) {
     		//numMosse++;
     		short* scacc= scacchiera2.getScacchiera();
     		short s1, s2;
@@ -147,10 +147,12 @@ private:
     			for(int i = 1; i<10; i++)
     				for(int j = minColumn[i]; j <= maxColumn[i]; j++){
     					if(scacc[i*11+j] == s1){
-    						centerDist += 1.5/(distance[i][j][5][5] + 1);
+                            std::unordered_map<int,int>::const_iterator got = distance.find(i*1000+j*100+5*10+5);
+    						centerDist += 2/((got->second) + 1);
     						coesione += calcolaCoesione(scacc,i,j);
     					}else if(scacc[i*11+j] == s2){
-    						centerDist -= 5/(distance[i][j][5][5] + 1);
+                            std::unordered_map<int,int>::const_iterator got = distance.find(i*1000+j*100+5*10+5);
+    						centerDist -= 5/((got->second) + 1);
     						coesione -= 1.5*calcolaCoesione(scacc,i,j);
     					}
     				}
@@ -170,7 +172,7 @@ private:
     									if(scacchiera2.esisteCella(i-1, j)){//FIXME
     										if(scacc[(i-1)*11+j] == 1){//una pedina
     											scacFuturaClass = scacchiera2;
-    											scacFutura = scacFuturaClass.getScacchiera();
+    											//scacFutura = scacFuturaClass.getScacchiera();
     											scacFuturaClass.aggiornaScacchiera(i, j, i, j, i-1, j, i-1, j);
     											m = generaStringaMossa(i, j, i, j, i-1, j, i-1, j);
     											currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -185,7 +187,7 @@ private:
     												if(scacchiera2.esisteCella(i-2, j)){
     													if(scacc[(i-2)*11+j] == 1){// la cella controllata e' vuota quindi mi sposto li
     														scacFuturaClass = scacchiera2;
-    														scacFutura = scacFuturaClass.getScacchiera();
+    														//scacFutura = scacFuturaClass.getScacchiera();
     														scacFuturaClass.aggiornaScacchiera(i-1, j, i, j, i-2, j, i-1, j);//indici invertiti per avere indici mossa ordinati correttaete per tutto il caso NORD
     														m = generaStringaMossa(i-1, j, i, j, i-2, j, i-1, j);
     														currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -198,7 +200,7 @@ private:
     														ab = bestValue;
     													}else if(scacc[(i-2)*11+j] == s2 && scacchiera2.esisteCella(i-3, j) && ((scacc[(i-3)*11+j] == 1) || scacc[(i-3)*11+j] == 0 )){//NOTA: if innestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
     															scacFuturaClass = scacchiera2;
-    															scacFutura = scacFuturaClass.getScacchiera();
+    															//scacFutura = scacFuturaClass.getScacchiera();
     															scacFuturaClass.aggiornaScacchiera(i-1, j, i, j, i-2, j, i-1, j);
     															m = generaStringaMossa(i-1, j, i, j, i-2, j, i-1, j);
     															currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -213,7 +215,7 @@ private:
     															if(scacchiera2.esisteCella(i-3, j)){
     																if(scacc[(i-3)*11+j] == 1){//cella vuota
     																	scacFuturaClass = scacchiera2;
-    																	scacFutura = scacFuturaClass.getScacchiera();
+    																	//scacFutura = scacFuturaClass.getScacchiera();
     																	scacFuturaClass.aggiornaScacchiera(i-2, j, i, j, i-3, j, i-1, j);
     																	m = generaStringaMossa(i-2, j, i, j, i-3, j, i-1, j);
     																	currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -227,7 +229,7 @@ private:
     																}else if(scacc[(i-3)*11+j] == s2 && scacchiera2.esisteCella(i-4, j)){//c'e' avversario
     																		if(scacc[(i-4)*11+j] == 1){
     																			scacFuturaClass = scacchiera2;
-    																			scacFutura = scacFuturaClass.getScacchiera();
+    																			//scacFutura = scacFuturaClass.getScacchiera();
     																			scacFuturaClass.aggiornaScacchiera(i-2, j, i, j, i-3, j, i-1, j);
     																			m = generaStringaMossa(i-2, j, i, j, i-3, j, i-1, j);
     																			currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -241,7 +243,7 @@ private:
     																		}else if(scacc[(i-4)*11+j] == s2){
     																				if(scacchiera2.esisteCella(i-5, j) && scacc[(i-5)*11+j] == 1){
     																					scacFuturaClass = scacchiera2;
-    																					scacFutura = scacFuturaClass.getScacchiera();
+    																					//scacFutura = scacFuturaClass.getScacchiera();
     																					scacFuturaClass.aggiornaScacchiera(i-2, j, i, j, i-3, j, i-1, j);
     																					m = generaStringaMossa(i-2, j, i, j, i-3, j, i-1, j);
     																					currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -254,7 +256,7 @@ private:
     																					ab = bestValue;
     																				}else if(scacc[(i-5)*11+j] == 0){
     																					scacFuturaClass = scacchiera2;
-    																					scacFutura = scacFuturaClass.getScacchiera();
+    																					//scacFutura = scacFuturaClass.getScacchiera();
     																					scacFuturaClass.aggiornaScacchiera(i-2, j, i, j, i-3, j, i-1, j);
     																					m = generaStringaMossa(i-2, j, i, j, i-3, j, i-1, j);
     																					currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -269,7 +271,7 @@ private:
     																		}
     																	}else if(scacc[(i-3)*11+j] == s2 && scacc[(i-4)*11+j] == 0){
     																		scacFuturaClass = scacchiera2;
-    																		scacFutura = scacFuturaClass.getScacchiera();
+    																		//scacFutura = scacFuturaClass.getScacchiera();
     																		scacFuturaClass.aggiornaScacchiera(i-2, j, i, j, i-3, j, i-1, j);
     																		m = generaStringaMossa(i-2, j, i, j, i-3, j, i-1, j);
     																		currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -291,7 +293,7 @@ private:
     									if(scacchiera2.esisteCella(i-1, j-1)){//FIXME
     										if(scacc[(i-1)*11+j-1] == 1){//una pedina
     											scacFuturaClass = scacchiera2;
-    											scacFutura = scacFuturaClass.getScacchiera();
+    											//scacFutura = scacFuturaClass.getScacchiera();
     											scacFuturaClass.aggiornaScacchiera(i, j, i, j, i-1, j-1, i-1, j-1);
     											m = generaStringaMossa(i, j, i, j, i-1, j-1, i-1, j-1);
     											currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -306,7 +308,7 @@ private:
     												if(scacchiera2.esisteCella(i-2, j-2)){
     													if(scacc[(i-2)*11+j-2] == 1){// la cella controllata e' vuota
     														scacFuturaClass = scacchiera2;
-    														scacFutura = scacFuturaClass.getScacchiera();
+    														//scacFutura = scacFuturaClass.getScacchiera();
     														scacFuturaClass.aggiornaScacchiera(i-1, j-1, i, j, i-2, j-2, i-1, j-1); //indici NO inertiti per lo stesso motivo del NORD
     														m = generaStringaMossa(i-1, j-1, i, j, i-2, j-2, i-1, j-1);
     														currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -319,7 +321,7 @@ private:
     														ab = bestValue;
     													}else if(scacc[(i-2)*11+j-2] == s2 && (scacchiera2.esisteCella(i-3, j-3) && (scacc[(i-3)*11+j-3] == 1 || scacc[(i-3)*11+j-3] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
     															scacFuturaClass = scacchiera2;
-    															scacFutura = scacFuturaClass.getScacchiera();
+    															//scacFutura = scacFuturaClass.getScacchiera();
     															scacFuturaClass.aggiornaScacchiera(i-1, j-1, i, j, i-2, j-2, i-1, j-1);
     															m = generaStringaMossa(i-1, j-1, i, j, i-2, j-2, i-1, j-1);
     															currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -334,7 +336,7 @@ private:
     															if(scacchiera2.esisteCella(i-3, j-3)){
     																if(scacc[(i-3)*11+j-3] == 1){//cella vuota
     																	scacFuturaClass = scacchiera2;
-    																	scacFutura = scacFuturaClass.getScacchiera();
+    																	//scacFutura = scacFuturaClass.getScacchiera();
     																	scacFuturaClass.aggiornaScacchiera(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
     																	m = generaStringaMossa(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
     																	currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -348,7 +350,7 @@ private:
     																}else if(scacc[(i-3)*11+j-3] == s2 && scacchiera2.esisteCella(i-4, j-4)){//c'e' avversario
     																		if(scacc[(i-4)*11+j-4] == 1){
     																			scacFuturaClass = scacchiera2;
-    																			scacFutura = scacFuturaClass.getScacchiera();
+    																			//scacFutura = scacFuturaClass.getScacchiera();
     																			scacFuturaClass.aggiornaScacchiera(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
     																			m = generaStringaMossa(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
     																			currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -362,7 +364,7 @@ private:
     																		}else if(scacc[(i-4)*11+j-4] == s2){
     																				if(scacchiera2.esisteCella(i-5, j-5) && scacc[(i-5)*11+j-5] == 1){
     																					scacFuturaClass = scacchiera2;
-    																					scacFutura = scacFuturaClass.getScacchiera();
+    																					//scacFutura = scacFuturaClass.getScacchiera();
     																					scacFuturaClass.aggiornaScacchiera(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
     																					m = generaStringaMossa(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
     																					currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -375,7 +377,7 @@ private:
     																					ab = bestValue;
     																				}else if(scacc[(i-5)*11+j-5] == 0){
     																					scacFuturaClass = scacchiera2;
-    																					scacFutura = scacFuturaClass.getScacchiera();
+    																					//scacFutura = scacFuturaClass.getScacchiera();
     																					scacFuturaClass.aggiornaScacchiera(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
     																					m = generaStringaMossa(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
     																					currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -390,7 +392,7 @@ private:
     																		}
     																	}else if(scacc[(i-3)*11+j-3] == s2 && scacc[(i-4)*11+j-4] == 0){
     																		scacFuturaClass = scacchiera2;
-    																		scacFutura = scacFuturaClass.getScacchiera();
+    																		//scacFutura = scacFuturaClass.getScacchiera();
     																		scacFuturaClass.aggiornaScacchiera(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
     																		m = generaStringaMossa(i-2, j-2, i, j, i-3, j-3, i-1, j-1);
     																		currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -413,7 +415,7 @@ private:
     									if(scacchiera2.esisteCella(i, j-1)){//FIXME
     										if(scacc[i*11+j-1] == 1){//una pedina
     											scacFuturaClass = scacchiera2;
-    											scacFutura = scacFuturaClass.getScacchiera();
+    											//scacFutura = scacFuturaClass.getScacchiera();
     											scacFuturaClass.aggiornaScacchiera(i, j, i, j, i, j-1, i, j-1);
     											m = generaStringaMossa(i, j, i, j, i, j-1, i, j-1);
     											currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -428,7 +430,7 @@ private:
     												if(scacchiera2.esisteCella(i, j-2)){
     													if(scacc[i*11+j-2] == 1){// la cella controllata e' vuota
     														scacFuturaClass = scacchiera2;
-    														scacFutura = scacFuturaClass.getScacchiera();
+    														//scacFutura = scacFuturaClass.getScacchiera();
     														scacFuturaClass.aggiornaScacchiera(i, j-1, i, j, i, j-2, i, j-1);
     														m = generaStringaMossa(i, j-1, i, j, i, j-2, i, j-1);
     														currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -441,7 +443,7 @@ private:
     														ab = bestValue;
     													}else if(scacc[i*11+j-2] == s2 && (scacchiera2.esisteCella(i, j-3) && (scacc[i*11+j-3] == 1 || scacc[i*11+j-3] == 0))){
     															scacFuturaClass = scacchiera2;
-    															scacFutura = scacFuturaClass.getScacchiera();
+    															//scacFutura = scacFuturaClass.getScacchiera();
     															scacFuturaClass.aggiornaScacchiera(i, j-1, i, j, i, j-2, i, j-1);
     															m = generaStringaMossa(i, j-1, i, j, i, j-2, i, j-1);
     															currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -456,7 +458,7 @@ private:
     															if(scacchiera2.esisteCella(i, j-3)){
     																if(scacc[i*11+j-3] == 1){//cella vuota
     																	scacFuturaClass = scacchiera2;
-    																	scacFutura = scacFuturaClass.getScacchiera();
+    																	//scacFutura = scacFuturaClass.getScacchiera();
     																	scacFuturaClass.aggiornaScacchiera(i, j-2, i, j, i, j-3, i, j-1);
     																	m = generaStringaMossa(i, j-2, i, j, i, j-3, i, j-1);
     																	currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -470,7 +472,7 @@ private:
     																}else if(scacc[i*11+j-3] == s2 && scacchiera2.esisteCella(i, j-4)){//c'e' avversario
     																		if(scacc[i*11+j-4] == 1){
     																			scacFuturaClass = scacchiera2;
-    																			scacFutura = scacFuturaClass.getScacchiera();
+    																			//scacFutura = scacFuturaClass.getScacchiera();
     																			scacFuturaClass.aggiornaScacchiera(i, j-2, i, j, i, j-3, i, j-1);// da controllare
     																			m = generaStringaMossa(i, j-2, i, j, i, j-3, i, j-1);
     																			currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -484,7 +486,7 @@ private:
     																		}else if(scacc[i*11+j-4] == s2){
     																				if(scacchiera2.esisteCella(i, j-5) && scacc[i*11+j-5] == 1){
     																					scacFuturaClass = scacchiera2;
-    																					scacFutura = scacFuturaClass.getScacchiera();
+    																					//scacFutura = scacFuturaClass.getScacchiera();
     																					scacFuturaClass.aggiornaScacchiera(i, j-2, i, j, i, j-3, i, j-1);// da controllare, la pedina avversaria non viene toccata
     																					m = generaStringaMossa(i, j-2, i, j, i, j-3, i, j-1);
     																					currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -497,7 +499,7 @@ private:
     																					ab = bestValue;
     																				}else if(scacc[i*11+j-5] == 0){
     																					scacFuturaClass = scacchiera2;
-    																					scacFutura = scacFuturaClass.getScacchiera();
+    																					//scacFutura = scacFuturaClass.getScacchiera();
     																					scacFuturaClass.aggiornaScacchiera(i, j-2, i, j, i, j-3, i, j-1);// da controllare, la pedina avversaria non viene toccata
     																					m = generaStringaMossa(i, j-2, i, j, i, j-3, i, j-1);
     																					currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -512,7 +514,7 @@ private:
     																		}
     																	}else if(scacc[i*11+j-3] == s2 && scacc[i*11+j-4] == 0){
     																		scacFuturaClass = scacchiera2;
-    																		scacFutura = scacFuturaClass.getScacchiera();
+    																		//scacFutura = scacFuturaClass.getScacchiera();
     																		scacFuturaClass.aggiornaScacchiera(i, j-2, i, j, i, j-3, i, j-1);// da controllare
     																		m = generaStringaMossa(i, j-2, i, j, i, j-3, i, j-1);
     																		currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -535,7 +537,7 @@ private:
     									if(scacchiera2.esisteCella(i+1, j)){//FIXME
     										if(scacc[(i+1)*11+j] == 1){//una pedina
     											scacFuturaClass = scacchiera2;
-    											scacFutura = scacFuturaClass.getScacchiera();
+    											//scacFutura = scacFuturaClass.getScacchiera();
     											scacFuturaClass.aggiornaScacchiera(i, j, i, j, i+1, j, i+1, j);
     											m = generaStringaMossa(i, j, i, j, i+1, j, i+1, j);
     											currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -550,7 +552,7 @@ private:
     												if(scacchiera2.esisteCella(i+2, j)){
     													if(scacc[(i+2)*11+j] == 1){// la cella controllata e' vuota quindi mi sposto li
     														scacFuturaClass = scacchiera2;
-    														scacFutura = scacFuturaClass.getScacchiera();
+    														//scacFutura = scacFuturaClass.getScacchiera();
     														scacFuturaClass.aggiornaScacchiera(i, j, i+1, j, i+1, j, i+2, j);// da controllare
     														m = generaStringaMossa(i, j, i+1, j, i+1, j, i+2, j);
     														currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -563,7 +565,7 @@ private:
     														ab = bestValue;
     													}else if(scacc[(i+2)*11+j] == s2 && (scacchiera2.esisteCella(i+3, j) && (scacc[(i+3)*11+j] == 1 || scacc[(i+3)*11+j] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
     															scacFuturaClass = scacchiera2;
-    															scacFutura = scacFuturaClass.getScacchiera();
+    															//scacFutura = scacFuturaClass.getScacchiera();
     															scacFuturaClass.aggiornaScacchiera(i, j, i+1, j, i+1, j, i+2, j);// da controllare, la pedina avversaria non viene toccata
     															m = generaStringaMossa(i, j, i+1, j, i+1, j, i+2, j);
     															currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -578,7 +580,7 @@ private:
     															if(scacchiera2.esisteCella(i+3, j)){
     																if(scacc[(i+3)*11+j] == 1){//cella vuota
     																	scacFuturaClass = scacchiera2;
-    																	scacFutura = scacFuturaClass.getScacchiera();
+    																	//scacFutura = scacFuturaClass.getScacchiera();
     																	scacFuturaClass.aggiornaScacchiera(i, j, i+2, j, i+1, j, i+3, j);// da controllare
     																	m = generaStringaMossa(i, j, i+2, j, i+1, j, i+3, j);
     																	currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -592,7 +594,7 @@ private:
     																}else if(scacc[(i+3)*11+j] == s2 && scacchiera2.esisteCella(i+4, j)){//c'e' avversario
     																		if(scacc[(i+4)*11+j] == 1){
     																			scacFuturaClass = scacchiera2;
-    																			scacFutura = scacFuturaClass.getScacchiera();
+    																			//scacFutura = scacFuturaClass.getScacchiera();
     																			scacFuturaClass.aggiornaScacchiera(i, j, i+2, j, i+1, j, i+3, j);// da controllare
     																			m = generaStringaMossa(i, j, i+2, j, i+1, j, i+3, j);
     																			currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -606,7 +608,7 @@ private:
     																		}else if(scacc[(i+4)*11+j] == s2){
     																				if(scacchiera2.esisteCella(i+5, j) && scacc[(i+5)*11+j] == 1){
     																					scacFuturaClass = scacchiera2;
-    																					scacFutura = scacFuturaClass.getScacchiera();
+    																					//scacFutura = scacFuturaClass.getScacchiera();
     																					scacFuturaClass.aggiornaScacchiera(i, j, i+2, j, i+1, j, i+3, j);// da controllare, la pedina avversaria non viene toccata
     																					m = generaStringaMossa(i, j, i+2, j, i+1, j, i+3, j);
     																					currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -619,7 +621,7 @@ private:
     																					ab = bestValue;
     																				}else if(scacc[(i+5)*11+j] == 0){
     																					scacFuturaClass = scacchiera2;
-    																					scacFutura = scacFuturaClass.getScacchiera();
+    																					//scacFutura = scacFuturaClass.getScacchiera();
     																					scacFuturaClass.aggiornaScacchiera(i, j, i+2, j, i+1, j, i+3, j);// da controllare, la pedina avversaria non viene toccata
     																					m = generaStringaMossa(i, j, i+2, j, i+1, j, i+3, j);
     																					currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -634,7 +636,7 @@ private:
     																		}
     																	}else if(scacc[(i+3)*11+j] == s2 && scacc[(i+4)*11+j] == 0){
     																		scacFuturaClass = scacchiera2;
-    																		scacFutura = scacFuturaClass.getScacchiera();
+    																		//scacFutura = scacFuturaClass.getScacchiera();
     																		scacFuturaClass.aggiornaScacchiera(i, j, i+2, j, i+1, j, i+3, j);// da controllare
     																		m = generaStringaMossa(i, j, i+2, j, i+1, j, i+3, j);
     																		currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -656,7 +658,7 @@ private:
     									if(scacchiera2.esisteCella(i+1, j+1)){//FIXME
     										if(scacc[(i+1)*11+j+1] == 1){//una pedina
     											scacFuturaClass = scacchiera2;
-    											scacFutura = scacFuturaClass.getScacchiera();
+    											//scacFutura = scacFuturaClass.getScacchiera();
     											scacFuturaClass.aggiornaScacchiera(i, j, i, j, i+1, j+1, i+1, j+1);
     											m = generaStringaMossa(i, j, i, j, i+1, j+1, i+1, j+1);
     											currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -670,7 +672,7 @@ private:
     										}else if(scacc[(i+1)*11+j+1] == s1){// due pedine allineate
     												if(scacchiera2.esisteCella(i+2, j+2)){
     													scacFuturaClass = scacchiera2;
-    													scacFutura = scacFuturaClass.getScacchiera();
+    													//scacFutura = scacFuturaClass.getScacchiera();
     													if(scacc[(i+2)*11+j+2] == 1){// la cella controllata e' vuota quindi mi sposto li'
     														scacFuturaClass.aggiornaScacchiera(i, j, i+1, j+1, i+1, j+1, i+2, j+2);// da controllare
     														m = generaStringaMossa(i, j, i+1, j+1, i+1, j+1, i+2, j+2);
@@ -684,7 +686,7 @@ private:
     														ab = bestValue;
     													}else if(scacc[(i+2)*11+j+2] == s2 && (scacchiera2.esisteCella(i+3, j+3) && (scacc[(i+3)*11+j+3] == 1 || scacc[(i+3)*11+j+3] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
     															scacFuturaClass = scacchiera2;
-    															scacFutura = scacFuturaClass.getScacchiera();
+    															//scacFutura = scacFuturaClass.getScacchiera();
     															scacFuturaClass.aggiornaScacchiera(i, j, i+1, j+1, i+1, j+1, i+2, j+2);// da controllare, la pedina avversaria non viene toccata
     															m = generaStringaMossa(i, j, i+1, j+1, i+1, j+1, i+2, j+2);
     															currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -699,7 +701,7 @@ private:
     															if(scacchiera2.esisteCella(i+3, j+3)){
     																if(scacc[(i+3)*11+j+3] == s1){//cella vuota
     																	scacFuturaClass = scacchiera2;
-    																	scacFutura = scacFuturaClass.getScacchiera();
+    																	//scacFutura = scacFuturaClass.getScacchiera();
     																	scacFuturaClass.aggiornaScacchiera(i, j, i+2, j+2, i+1, j+1, i+3, j+3);// da controllare
     																	m = generaStringaMossa(i, j, i+2, j+2, i+1, j+1, i+3, j+3);
     																	currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -711,9 +713,9 @@ private:
     																		goto hell;
     																	ab = bestValue;
     																}else if(scacc[(i+3)*11+j+3] == s2 && scacchiera2.esisteCella(i+4, j+4)){//c'e' avversario
-    																		if(scacFutura[(i+4)*11+j+4] == 1){
+    																		if(scacc[(i+4)*11+j+4] == 1){
     																			scacFuturaClass = scacchiera2;
-    																			scacFutura = scacFuturaClass.getScacchiera();
+    																			//scacFutura = scacFuturaClass.getScacchiera();
     																			scacFuturaClass.aggiornaScacchiera(i, j, i+2, j+2, i+1, j+1, i+3, j+3);// da controllare
     																			m = generaStringaMossa(i, j, i+2, j+2, i+1, j+1, i+3, j+3);
     																			currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -727,7 +729,7 @@ private:
     																		}else if(scacc[(i+4)*11+j+4] == s2){
     																				if(scacchiera2.esisteCella(i+5, j+5) && scacc[(i+5)*11+j+5] == 1){
     																					scacFuturaClass = scacchiera2;
-    																					scacFutura = scacFuturaClass.getScacchiera();
+    																					//scacFutura = scacFuturaClass.getScacchiera();
     																					scacFuturaClass.aggiornaScacchiera(i, j, i+2, j+2, i+1, j+1, i+3, j+3);// da controllare, la pedina avversaria non viene toccata
     																					m = generaStringaMossa(i, j, i+2, j+2, i+1, j+1, i+3, j+3);
     																					currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -740,7 +742,7 @@ private:
     																					ab = bestValue;
     																				}else if(scacc[(i+5)*11+j+5] == 0){
     																					scacFuturaClass = scacchiera2;
-    																					scacFutura = scacFuturaClass.getScacchiera();
+    																					//scacFutura = scacFuturaClass.getScacchiera();
     																					scacFuturaClass.aggiornaScacchiera(i, j, i+2, j+2, i+1, j+1, i+3, j+3);// da controllare, la pedina avversaria non viene toccata
     																					m = generaStringaMossa(i, j, i+2, j+2, i+1, j+1, i+3, j+3);
     																					currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -755,7 +757,7 @@ private:
     																		}
     																	}else if(scacc[(i+3)*11+j+3] == s2 && scacc[(i+4)*11+j+4] == 0){
     																		scacFuturaClass = scacchiera2;
-    																		scacFutura = scacFuturaClass.getScacchiera();
+    																		//scacFutura = scacFuturaClass.getScacchiera();
     																		scacFuturaClass.aggiornaScacchiera(i, j, i+2, j+2, i+1, j+1, i+3, j+3);// da controllare
     																		m = generaStringaMossa(i, j, i+2, j+2, i+1, j+1, i+3, j+3);
     																		currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -777,7 +779,7 @@ private:
     									if(scacchiera2.esisteCella(i, j+1)){//FIXME
     										if(scacc[i*11+j+1] == 1){//una pedina
     											scacFuturaClass = scacchiera2;
-    											scacFutura = scacFuturaClass.getScacchiera();
+    											//scacFutura = scacFuturaClass.getScacchiera();
     											scacFuturaClass.aggiornaScacchiera(i, j, i, j, i, j+1, i, j+1);
     											m = generaStringaMossa(i, j, i, j, i, j+1, i, j+1);
     											currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -792,7 +794,7 @@ private:
     												if(scacchiera2.esisteCella(i, j+2)){
     													if(scacc[i*11+j+2] == 1){// la cella controllata e' vuota quindi mi sposto li'
     														scacFuturaClass = scacchiera2;
-    														scacFutura = scacFuturaClass.getScacchiera();
+    														//scacFutura = scacFuturaClass.getScacchiera();
     														scacFuturaClass.aggiornaScacchiera(i, j, i, j+1, i, j+1, i, j+2);// da controllare
     														m = generaStringaMossa(i, j, i, j+1, i, j+1, i, j+2);
     														currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -805,7 +807,7 @@ private:
     														ab = bestValue;
     													}else if(scacc[i*11+j+2] == s2 && (scacchiera2.esisteCella(i, j+3) && (scacc[i*11+j+3] == 1 || scacc[i*11+j+3] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
     															scacFuturaClass = scacchiera2;
-    															scacFutura = scacFuturaClass.getScacchiera();
+    															//scacFutura = scacFuturaClass.getScacchiera();
     															scacFuturaClass.aggiornaScacchiera(i, j, i, j+1, i, j+1, i, j+2);// da controllare, la pedina avversaria non viene toccata
     															m = generaStringaMossa(i, j, i, j+1, i, j+1, i, j+2);
     															currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -820,7 +822,7 @@ private:
     															if(scacchiera2.esisteCella(i, j+3)){
     																if(scacc[i*11+j-3] == s1){//cella vuota
     																	scacFuturaClass = scacchiera2;
-    																	scacFutura = scacFuturaClass.getScacchiera();
+    																	//scacFutura = scacFuturaClass.getScacchiera();
     																	scacFuturaClass.aggiornaScacchiera(i, j, i, j+2, i, j+1, i, j+3);// da controllare
     																	m = generaStringaMossa(i, j, i, j+2, i, j+1, i, j+3);
     																	currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -834,7 +836,7 @@ private:
     																}else if(scacc[i*11+j+3] == s2 && scacchiera2.esisteCella(i, j+4)){//c'e' avversario
     																		if(scacc[i*11+j+4] == 1){
     																			scacFuturaClass = scacchiera2;
-    																			scacFutura = scacFuturaClass.getScacchiera();
+    																			//scacFutura = scacFuturaClass.getScacchiera();
     																			scacFuturaClass.aggiornaScacchiera(i, j, i, j+2, i, j+1, i, j+3);// da controllare
     																			m = generaStringaMossa(i, j, i, j+2, i, j+1, i, j+3);
     																			currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -848,7 +850,7 @@ private:
     																		}else if(scacc[i*11+j+4] == s2){
     																				if(scacchiera2.esisteCella(i, j+5) && scacc[i*11+j+5] == 1){
     																					scacFuturaClass = scacchiera2;
-    																					scacFutura = scacFuturaClass.getScacchiera();
+    																					//scacFutura = scacFuturaClass.getScacchiera();
     																					scacFuturaClass.aggiornaScacchiera(i, j, i, j+2, i, j+1, i, j+3);// da controllare, la pedina avversaria non viene toccata
     																					m = generaStringaMossa(i, j, i, j+2, i, j+1, i, j+3);
     																					currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -861,7 +863,7 @@ private:
     																					ab = bestValue;
     																				}else if(scacc[i*11+j+5] == 0){
     																					scacFuturaClass = scacchiera2;
-    																					scacFutura = scacFuturaClass.getScacchiera();
+    																					//scacFutura = scacFuturaClass.getScacchiera();
     																					scacFuturaClass.aggiornaScacchiera(i, j, i, j+2, i, j+1, i, j+3);// da controllare, la pedina avversaria non viene toccata
     																					m = generaStringaMossa(i, j, i, j+2, i, j+1, i, j+3);
     																					currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -876,7 +878,7 @@ private:
     																		}
     																	}else if(scacc[i*11+j+3] == s2 && scacc[i*11+j+4] == 0){
     																		scacFuturaClass = scacchiera2;
-    																		scacFutura = scacFuturaClass.getScacchiera();
+    																		//scacFutura = scacFuturaClass.getScacchiera();
     																		scacFuturaClass.aggiornaScacchiera(i, j, i, j+2, i, j+1, i, j+3);// da controllare
     																		m = generaStringaMossa(i, j, i, j+2, i, j+1, i, j+3);
     																		currValue = valutaMossa(scacFuturaClass, side2, depth-1, ab == -(std::numeric_limits<double>::infinity()) ? ab: -ab);
@@ -935,8 +937,10 @@ public:
         for(int i=0; i<11; i++)
             for(int j=0; j<11; j++)
                 for(int k=0; k<11; k++)
-                    for(int l=0; l<11;l++)
-                        distance[i][j][k][l]=calcolaDistanza(i,j,k,l);
+                    for(int l=0; l<11;l++){
+                        dist=(i*1000+j*100+k*10+l);
+                        distance[dist]=calcolaDistanza(i,j,k,l);
+                    }
     }
     
     string generaStringaMossa(int i, int j, int k, int l, int m, int n, int o, int p){
