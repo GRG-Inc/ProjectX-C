@@ -17,6 +17,7 @@
 #include <chrono>
 #include "AI.cpp"
 #include <locale>
+#include <thread>
 
 using namespace::std;
 
@@ -33,11 +34,42 @@ private:
 	 struct addrinfo host_info;       // The struct that getaddrinfo() fills up with data.
 	 struct addrinfo *host_info_list; // Pointer to the to the linked list of host_info's.
 	 ssize_t bytes_received, bytes_sent;
+        int sockfd, portno, n;
+        char buffer[256];
 public:
     int socketfd;
     
     Client(const char* serverAddress, const char* port){
         int status;
+        
+        
+       
+        struct sockaddr_in serv_addr;
+        struct hostent *server;
+        
+        
+        
+        portno = 8901;
+        
+        sockfd = socket(AF_INET, SOCK_STREAM, 0);
+        
+        if (sockfd < 0)
+            error("ERROR opening socket");
+        server = gethostbyname("127.0.0.1");
+        if (server == NULL) {
+            fprintf(stderr,"ERROR, no such host\n");
+            exit(0);
+        }
+        bzero((char *) &serv_addr, sizeof(serv_addr));
+        serv_addr.sin_family = AF_INET;
+        bcopy((char *)server->h_addr,
+              (char *)&serv_addr.sin_addr.s_addr,
+              server->h_length);
+        serv_addr.sin_port = htons(portno);
+        if (connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0)
+            error("ERROR connecting");
+        
+        
         
         ai = new AI();
         (*ai).distanza();
@@ -71,44 +103,22 @@ public:
     }
 
     void play(){
-        int sockfd, portno, n;
-        struct sockaddr_in serv_addr;
-        struct hostent *server;
-        
-        char buffer[256];
-        
-        portno = 8901;
-        
-        sockfd = socket(AF_INET, SOCK_STREAM, 0);
-        
-        if (sockfd < 0)
-            error("ERROR opening socket");
-        server = gethostbyname("127.0.0.1");
-        if (server == NULL) {
-            fprintf(stderr,"ERROR, no such host\n");
-            exit(0);
-        }
-        bzero((char *) &serv_addr, sizeof(serv_addr));
-        serv_addr.sin_family = AF_INET;
-        bcopy((char *)server->h_addr,
-              (char *)&serv_addr.sin_addr.s_addr,
-              server->h_length);
-        serv_addr.sin_port = htons(portno);
-        if (connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0)
-            error("ERROR connecting");
         
         bzero(buffer,256);
         n = read(sockfd,buffer,255);
         
         if(startsWith(buffer, (char*)"WELCOME"))
             printf(buffer);
-        else
-            printf("Altro messaggio\n");
         
-        char* col = new char[6];
+        /*char* col = new char[6];
         substr(buffer, 8, col);
         
-        string colour(col);
+        string colour(col);*/
+        string colour;
+        if(buffer[9]=='l')
+            colour="black";
+        else
+            colour="white";
         
         char* msg = new char[256];
         
@@ -140,7 +150,7 @@ public:
             }
             else if(startsWith(buffer, (char*)"YOUR_TURN")){
                 cout << "Entro in YOUR_TURN" << endl;
-                string move = ai->generaProssimaMossa(*ai->getScacchiera(), col, 3);
+                string move = ai->generaProssimaMossa(*ai->getScacchiera(), colour, 3);
                 cout << "La tua mossa è: " << move << endl;
                 
                 int i;
@@ -152,9 +162,10 @@ public:
                 sprintf(buffer, "MOVE %s\n", msg);
                 printf("Sto per inviare la mossa: %s\n", buffer);
                 
+                std::this_thread::sleep_for(std::chrono::milliseconds(40));
                 n = write(sockfd,buffer,strlen(buffer));
                 
-                ai->convertiStringaMossa(msg);
+                ai->convertiStringaMossa(move);
             }
             else if(startsWith(buffer, (char*)"TIMEOUT")){
                 cout << "Time out" << endl;
