@@ -20,6 +20,12 @@
 
 using namespace::std;
 
+void error(const char *msg)
+{
+    perror(msg);
+    exit(0);
+}
+
 class Client{
 
 private:
@@ -28,134 +34,140 @@ private:
 	 struct addrinfo *host_info_list; // Pointer to the to the linked list of host_info's.
 	 ssize_t bytes_received, bytes_sent;
 public:
-	int socketfd;
-
-	Client(const char* serverAddress, const char* port){
-		int status;
-
-
-			    // The MAN page of getaddrinfo() states "All  the other fields in the structure pointed
-			    // to by hints must contain either 0 or a null pointer, as appropriate." When a struct
-			    // is created in c++, it will be given a block of memory. This memory is not nessesary
-			    // empty. Therefor we use the memset function to make sure all fields are NULL.
-			    memset(&host_info, 0, sizeof host_info);
-
-			   // std::cout << "Setting up the structs..."  << std::endl;
-
-			    host_info.ai_family = AF_UNSPEC;     // IP version not specified. Can be both.
-			    host_info.ai_socktype = SOCK_STREAM; // Use SOCK_STREAM for TCP or SOCK_DGRAM for UDP.
-
-			    // Now fill up the linked list of host_info structs with google's address information.
-			    status = getaddrinfo(serverAddress, port, &host_info, &host_info_list);
-			    // getaddrinfo returns 0 on succes, or some other value when an error occured.
-			    // (translated into human readable text by the gai_gai_strerror function).
-			    if (status != 0)  std::cout << "getaddrinfo error" << gai_strerror(status) ;
-
-
-			   // std::cout << "Creating a socket..."  << std::endl;
-
-			    socketfd = socket(host_info_list->ai_family, host_info_list->ai_socktype,
-			                      host_info_list->ai_protocol);
-			    if (socketfd == -1)  std::cout << "socket error " ;
-
-
-			    //std::cout << "Connect()ing..."  << std::endl;
-			    status = connect(socketfd, host_info_list->ai_addr, host_info_list->ai_addrlen);
-			    if (status == -1)  std::cout << "connect error" ;
-
-
-			    /*std::cout << "send()ing message..."  << std::endl;
-			    char *msg; //= "GET / HTTP/1.1\nhost: www.google.com\n\n";
-			    int len;
-			    ssize_t bytes_sent;
-			    len = strlen(msg);
-			    bytes_sent = send(socketfd, msg, len, 0);*/
-
+    int socketfd;
+    
+    Client(const char* serverAddress, const char* port){
+        int status;
+        
         ai = new AI();
         (*ai).distanza();
-	}
-
-	~Client(){
-	    freeaddrinfo(host_info_list);
-	    close(socketfd);
+    }
+    
+    ~Client(){
+        freeaddrinfo(host_info_list);
+        close(socketfd);
         delete ai;
-	}
+    }
+    
+    bool startsWith(char c1[], char c2[]){
+        int i=0;
+        while(c2[i] != 0){
+            if(c1[i]==0)
+                return false;
+            if(c1[i] != c2[i])
+                return false;
+            i++;
+        }
+        
+        return true;
+    }
+    
+    void substr(char c[], int pos, char* s){
+        int i;
+        for(i=pos; c[i]!=0; i++){
+            s[i-pos] = c[i];
+        }
+        s[i-pos] = 0;
+    }
 
-	void play(){
-		string move;
-		string colour;
-		//std::cout << "Waiting to receive data..." << std::endl;
-		char incomming_data_buffer[1000];
-		bytes_received = recv(socketfd, incomming_data_buffer, 1000, 0);
-		// If no data arrives, the program will just wait here until some data arrives.
-		if (bytes_received == 0)
-			std::cout << "host shut down." << std::endl;
-		if (bytes_received == -1)
-			std::cout << "receive error!" << std::endl;
-		//std::cout << bytes_received << " bytes received :" << std::endl;
-		//incomming_data_buffer[bytes_recieved] = '\0';
-
-		string response(incomming_data_buffer);
-
-		if (boost::starts_with(response, "WELCOME"))
-		        colour = response.substr(8,5);
-		std::cout << colour << std::endl;
-
-		try {
-			while(true){
-				bytes_received = recv(socketfd, incomming_data_buffer, 1000, 0);
-				string response(incomming_data_buffer);
-				if(boost::starts_with(response, "VALID_MOVE"))
-					cout << "Valid move, please wait" << endl;
-				else if(boost::starts_with(response, "OPPONENT_MOVE")){
-					string opponentmove=response.substr(14,8);
-					ai->convertiStringaMossa(opponentmove);
-					cout << "Opponent move: "+opponentmove << endl;
-				}
-				else if(boost::starts_with(response, "VICTORY")){
-					cout << "You win" << endl;
-					break;
-				}
-				else if(boost::starts_with(response, "DEFEAT")){
-					cout << "You lose" <<endl;
-					break;
-				}
-				else if(boost::starts_with(response, "TIE")){
-					cout << "You tied" << endl;
-					break;
-				}
-				else if(boost::starts_with(response, "YOUR_TURN")){
-					move = ai->generaProssimaMossa(*ai->getScacchiera(), colour, 3);
-					cout << "La tua mossa è: "+ move << endl;
-					string str="MOVE ";
-					str.append(move);
-					str.append("\n");
-					//char *msg = "MOVE B5C6C6D7\n";
-					   // int len;
-					    //len = strlen(str);
-					    bytes_sent = send(socketfd, str.c_str(), str.size(), 0);
-                    ai->convertiStringaMossa(move);
-                    Scacchiera::stampaScacchiera(ai->getScacchiera()->getScacchiera());
-				}
-				else if(boost::starts_with(response, "TIMEOUT")){
-					cout << "Time out" << endl;
-					//freeaddrinfo(host_info_list);
-							    //close(socketfd);
-					break;
-				}
-				else if(boost::starts_with(response, "MESSAGE")){
-					cout << response.substr(8) << endl;
-				}
-                else break;
-			}
-		} catch (int e) {
-		    freeaddrinfo(host_info_list);
-		    close(socketfd);
-		    exit(-1);
-		}
-
-	}
-
+    void play(){
+        int sockfd, portno, n;
+        struct sockaddr_in serv_addr;
+        struct hostent *server;
+        
+        char buffer[256];
+        
+        portno = 8901;
+        
+        sockfd = socket(AF_INET, SOCK_STREAM, 0);
+        
+        if (sockfd < 0)
+            error("ERROR opening socket");
+        server = gethostbyname("127.0.0.1");
+        if (server == NULL) {
+            fprintf(stderr,"ERROR, no such host\n");
+            exit(0);
+        }
+        bzero((char *) &serv_addr, sizeof(serv_addr));
+        serv_addr.sin_family = AF_INET;
+        bcopy((char *)server->h_addr,
+              (char *)&serv_addr.sin_addr.s_addr,
+              server->h_length);
+        serv_addr.sin_port = htons(portno);
+        if (connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0)
+            error("ERROR connecting");
+        
+        bzero(buffer,256);
+        n = read(sockfd,buffer,255);
+        
+        if(startsWith(buffer, (char*)"WELCOME"))
+            printf(buffer);
+        else
+            printf("Altro messaggio\n");
+        
+        char* col = new char[6];
+        substr(buffer, 8, col);
+        
+        string colour(col);
+        
+        char* msg = new char[256];
+        
+        while(true){
+            bzero(buffer,256);
+            n = read(sockfd,buffer,255);
+            //printf(buffer);
+            
+            if(startsWith(buffer, (char*)"VALID_MOVE"))
+                cout << "Valid move, please wait" << endl;
+            else if(startsWith(buffer, (char*)"OPPONENT_MOVE")){
+                
+                substr(buffer, 14, msg);
+                
+                ai->convertiStringaMossa(msg);
+                cout << "Opponent move: " << msg << endl;
+            }
+            else if(startsWith(buffer, (char*)"VICTORY")){
+                cout << "You win" << endl;
+                break;
+            }
+            else if(startsWith(buffer, (char*)"DEFEAT")){
+                cout << "You lose" <<endl;
+                break;
+            }
+            else if(startsWith(buffer, (char*)"TIE")){
+                cout << "You tied" << endl;
+                break;
+            }
+            else if(startsWith(buffer, (char*)"YOUR_TURN")){
+                cout << "Entro in YOUR_TURN" << endl;
+                string move = ai->generaProssimaMossa(*ai->getScacchiera(), col, 3);
+                cout << "La tua mossa è: " << move << endl;
+                
+                int i;
+                for(i=0;i<8; i++){
+                    msg[i] = move.at(i);
+                }
+                msg[i] = 0;
+                
+                sprintf(buffer, "MOVE %s\n", msg);
+                printf("Sto per inviare la mossa: %s\n", buffer);
+                
+                n = write(sockfd,buffer,strlen(buffer));
+                
+                ai->convertiStringaMossa(msg);
+            }
+            else if(startsWith(buffer, (char*)"TIMEOUT")){
+                cout << "Time out" << endl;
+                break;
+            }
+            else if(startsWith(buffer, (char*)"MESSAGE")){
+                substr(buffer, 8, msg);
+                cout << msg << endl;
+            }
+            
+        }
+        close(sockfd);
+    }
 };
 
 int main()
