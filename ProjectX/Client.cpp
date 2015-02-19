@@ -34,12 +34,11 @@ private:
 	 struct addrinfo host_info;       // The struct that getaddrinfo() fills up with data.
 	 struct addrinfo *host_info_list; // Pointer to the to the linked list of host_info's.
 	 ssize_t bytes_received, bytes_sent;
-        int sockfd, portno, n;
+        int sockfd, portno, n, tempo;
         char buffer[256];
 public:
-    int socketfd;
     
-    Client(const char* serverAddress, const char* port){
+    Client(const char* serverAddress, const char* port, int time){
         int status;
         
         
@@ -73,11 +72,13 @@ public:
         
         ai = new AI();
         (*ai).distanza();
+
+		tempo = time;
     }
     
     ~Client(){
         freeaddrinfo(host_info_list);
-        close(socketfd);
+        close(sockfd);
         delete ai;
     }
     
@@ -135,6 +136,10 @@ public:
                 
                 ai->convertiStringaMossa(msg);
                 cout << "Opponent move: " << msg << endl;
+                if (buffer[23] == 'Y' && buffer[24] == 'O' && buffer[25] == 'U' && buffer[26] == 'R')
+                {
+                	goto your_turn;
+                }
             }
             else if(startsWith(buffer, (char*)"VICTORY")){
                 cout << "You win" << endl;
@@ -149,8 +154,8 @@ public:
                 break;
             }
             else if(startsWith(buffer, (char*)"YOUR_TURN")){
-                cout << "Entro in YOUR_TURN" << endl;
-                string move = ai->generaProssimaMossa(*ai->getScacchiera(), colour, 3);
+               your_turn: cout << "Entro in YOUR_TURN" << endl;
+                string move = ai->generaProssimaMossa(*ai->getScacchiera(), colour, tempo);
                 cout << "La tua mossa è: " << move << endl;
                 
                 int i;
@@ -162,7 +167,7 @@ public:
                 sprintf(buffer, "MOVE %s\n", msg);
                 printf("Sto per inviare la mossa: %s\n", buffer);
                 
-                std::this_thread::sleep_for(std::chrono::milliseconds(40));
+
                 n = write(sockfd,buffer,strlen(buffer));
                 
                 ai->convertiStringaMossa(move);
@@ -181,14 +186,16 @@ public:
     }
 };
 
-int main()
+int main(int argc, char** argv)
 	{
-        const char serverAddr[]="127.0.0.1";
-        const char port[]="8901";
-	Client * client = new Client(serverAddr, port);
-	client->play();
-	/*string move = ai.generaProssimaMossa(*ai.getScacchiera(), "Black", 3);
-	cout << move << endl;*/
-        delete client;
-	return 0;
+	char *serverAddr = argv[1];
+				char *port = argv[2];
+				int time = atoi(argv[3]);
+				cout << time << endl;
+				Client * client = new Client(serverAddr, port, time);
+				client->play();
+				/*string move = ai.generaProssimaMossa(*ai.getScacchiera(), "Black", 3);
+				cout << move << endl;*/
+				delete client;
+				return 0;
 	}
