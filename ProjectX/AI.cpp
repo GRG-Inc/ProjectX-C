@@ -197,10 +197,10 @@ private:
 											if (currValue < bestValue){
 												bestValue = currValue;
 												mossa = m;
+												if (alfabeta > bestValue)
+													goto hell;
+												ab = bestValue;
 											}
-											if (alfabeta > bestValue)
-												goto hell;
-											ab = bestValue;
 										}
 										else if (scacc[(i - 1) * 11 + j] == s1){// due pedine allineate
 											if (scacchiera2.esisteCella(i - 2, j)){
@@ -213,10 +213,10 @@ private:
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
+														if (alfabeta > bestValue)
+															goto hell;
+														ab = bestValue;
 													}
-													if (alfabeta > bestValue)
-														goto hell;
-													ab = bestValue;
 												}
 												else if (scacc[(i - 2) * 11 + j] == s2 && scacchiera2.esisteCella(i - 3, j) && ((scacc[(i - 3) * 11 + j] == 1) || scacc[(i - 3) * 11 + j] == 0)){//NOTA: if innestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
 													scacFuturaClass = scacchiera2;
@@ -227,10 +227,10 @@ private:
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
+														if (alfabeta > bestValue)
+															goto hell;
+														ab = bestValue;
 													}
-													if (alfabeta > bestValue)
-														goto hell;
-													ab = bestValue;
 												}
 												else if (scacc[(i - 2) * 11 + j] == s1){//tre pedine allineate
 													if (scacchiera2.esisteCella(i - 3, j)){
@@ -243,10 +243,10 @@ private:
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
+																if (alfabeta > bestValue)
+																	goto hell;
+																ab = bestValue;
 															}
-															if (alfabeta > bestValue)
-																goto hell;
-															ab = bestValue;
 														}
 														else if (scacc[(i - 3) * 11 + j] == s2 && scacchiera2.esisteCella(i - 4, j)){//c'e' avversario
 															if (scacc[(i - 4) * 11 + j] == 1){
@@ -258,10 +258,10 @@ private:
 																if (currValue < bestValue){
 																	bestValue = currValue;
 																	mossa = m;
+																	if (alfabeta > bestValue)
+																		goto hell;
+																	ab = bestValue;
 																}
-																if (alfabeta > bestValue)
-																	goto hell;
-																ab = bestValue;
 															}
 															else if (scacc[(i - 4) * 11 + j] == s2){
 																if (scacchiera2.esisteCella(i - 5, j) && scacc[(i - 5) * 11 + j] == 1){
@@ -273,10 +273,10 @@ private:
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
+																		if (alfabeta > bestValue)
+																			goto hell;
+																		ab = bestValue;
 																	}
-																	if (alfabeta > bestValue)
-																		goto hell;
-																	ab = bestValue;
 																}
 																else if (scacc[(i - 5) * 11 + j] == 0){
 																	scacFuturaClass = scacchiera2;
@@ -287,10 +287,10 @@ private:
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
+																		if (alfabeta > bestValue)
+																			goto hell;
+																		ab = bestValue;
 																	}
-																	if (alfabeta > bestValue)
-																		goto hell;
-																	ab = bestValue;
 																}
 															}
 														}
@@ -303,10 +303,10 @@ private:
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
+																if (alfabeta > bestValue)
+																	goto hell;
+																ab = bestValue;
 															}
-															if (alfabeta > bestValue)
-																goto hell;
-															ab = bestValue;
 														}
 													}
 												}
@@ -326,10 +326,10 @@ private:
 											if (currValue < bestValue){
 												bestValue = currValue;
 												mossa = m;
+												if (alfabeta > bestValue)
+													goto hell;
+												ab = bestValue;
 											}
-											if (alfabeta > bestValue)
-												goto hell;
-											ab = bestValue;
 										}
 										else if (scacc[(i - 1) * 11 + j - 1] == s1){// due pedine allineate
 											if (scacchiera2.esisteCella(i - 2, j - 2)){
@@ -342,10 +342,10 @@ private:
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
+														if (alfabeta > bestValue)
+															goto hell;
+														ab = bestValue;
 													}
-													if (alfabeta > bestValue)
-														goto hell;
-													ab = bestValue;
 												}
 												else if (scacc[(i - 2) * 11 + j - 2] == s2 && (scacchiera2.esisteCella(i - 3, j - 3) && (scacc[(i - 3) * 11 + j - 3] == 1 || scacc[(i - 3) * 11 + j - 3] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
 													scacFuturaClass = scacchiera2;
@@ -356,10 +356,10 @@ private:
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
+														if (alfabeta > bestValue)
+															goto hell;
+														ab = bestValue;
 													}
-													if (alfabeta > bestValue)
-														goto hell;
-													ab = bestValue;
 												}
 												else if (scacc[(i - 2) * 11 + j - 2] == s1){//tre pedine allineate
 													if (scacchiera2.esisteCella(i - 3, j - 3)){
@@ -372,10 +372,10 @@ private:
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
+																if (alfabeta > bestValue)
+																	goto hell;
+																ab = bestValue;
 															}
-															if (alfabeta > bestValue)
-																goto hell;
-															ab = bestValue;
 														}
 														else if (scacc[(i - 3) * 11 + j - 3] == s2 && scacchiera2.esisteCella(i - 4, j - 4)){//c'e' avversario
 															if (scacc[(i - 4) * 11 + j - 4] == 1){
@@ -387,10 +387,10 @@ private:
 																if (currValue < bestValue){
 																	bestValue = currValue;
 																	mossa = m;
+																	if (alfabeta > bestValue)
+																		goto hell;
+																	ab = bestValue;
 																}
-																if (alfabeta > bestValue)
-																	goto hell;
-																ab = bestValue;
 															}
 															else if (scacc[(i - 4) * 11 + j - 4] == s2){
 																if (scacchiera2.esisteCella(i - 5, j - 5) && scacc[(i - 5) * 11 + j - 5] == 1){
@@ -402,10 +402,10 @@ private:
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
+																		if (alfabeta > bestValue)
+																			goto hell;
+																		ab = bestValue;
 																	}
-																	if (alfabeta > bestValue)
-																		goto hell;
-																	ab = bestValue;
 																}
 																else if (scacc[(i - 5) * 11 + j - 5] == 0){
 																	scacFuturaClass = scacchiera2;
@@ -416,10 +416,10 @@ private:
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
+																		if (alfabeta > bestValue)
+																			goto hell;
+																		ab = bestValue;
 																	}
-																	if (alfabeta > bestValue)
-																		goto hell;
-																	ab = bestValue;
 																}
 															}
 														}
@@ -432,10 +432,10 @@ private:
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
+																if (alfabeta > bestValue)
+																	goto hell;
+																ab = bestValue;
 															}
-															if (alfabeta > bestValue)
-																goto hell;
-															ab = bestValue;
 														}
 													}
 												}
@@ -456,10 +456,10 @@ private:
 											if (currValue < bestValue){
 												bestValue = currValue;
 												mossa = m;
+												if (alfabeta > bestValue)
+													goto hell;
+												ab = bestValue;
 											}
-											if (alfabeta > bestValue)
-												goto hell;
-											ab = bestValue;
 										}
 										else if (scacc[i * 11 + j - 1] == s1){// due pedine allineate
 											if (scacchiera2.esisteCella(i, j - 2)){
@@ -472,10 +472,10 @@ private:
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
+														if (alfabeta > bestValue)
+															goto hell;
+														ab = bestValue;
 													}
-													if (alfabeta > bestValue)
-														goto hell;
-													ab = bestValue;
 												}
 												else if (scacc[i * 11 + j - 2] == s2 && (scacchiera2.esisteCella(i, j - 3) && (scacc[i * 11 + j - 3] == 1 || scacc[i * 11 + j - 3] == 0))){
 													scacFuturaClass = scacchiera2;
@@ -486,10 +486,10 @@ private:
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
+														if (alfabeta > bestValue)
+															goto hell;
+														ab = bestValue;
 													}
-													if (alfabeta > bestValue)
-														goto hell;
-													ab = bestValue;
 												}
 												else if (scacc[i * 11 + j - 2] == s1){//tre pedine allineate
 													if (scacchiera2.esisteCella(i, j - 3)){
@@ -502,10 +502,10 @@ private:
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
+																if (alfabeta > bestValue)
+																	goto hell;
+																ab = bestValue;
 															}
-															if (alfabeta > bestValue)
-																goto hell;
-															ab = bestValue;
 														}
 														else if (scacc[i * 11 + j - 3] == s2 && scacchiera2.esisteCella(i, j - 4)){//c'e' avversario
 															if (scacc[i * 11 + j - 4] == 1){
@@ -517,10 +517,10 @@ private:
 																if (currValue < bestValue){
 																	bestValue = currValue;
 																	mossa = m;
+																	if (alfabeta > bestValue)
+																		goto hell;
+																	ab = bestValue;
 																}
-																if (alfabeta > bestValue)
-																	goto hell;
-																ab = bestValue;
 															}
 															else if (scacc[i * 11 + j - 4] == s2){
 																if (scacchiera2.esisteCella(i, j - 5) && scacc[i * 11 + j - 5] == 1){
@@ -532,10 +532,10 @@ private:
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
+																		if (alfabeta > bestValue)
+																			goto hell;
+																		ab = bestValue;
 																	}
-																	if (alfabeta > bestValue)
-																		goto hell;
-																	ab = bestValue;
 																}
 																else if (scacc[i * 11 + j - 5] == 0){
 																	scacFuturaClass = scacchiera2;
@@ -546,10 +546,10 @@ private:
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
+																		if (alfabeta > bestValue)
+																			goto hell;
+																		ab = bestValue;
 																	}
-																	if (alfabeta > bestValue)
-																		goto hell;
-																	ab = bestValue;
 																}
 															}
 														}
@@ -562,10 +562,10 @@ private:
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
+																if (alfabeta > bestValue)
+																	goto hell;
+																ab = bestValue;
 															}
-															if (alfabeta > bestValue)
-																goto hell;
-															ab = bestValue;
 														}
 													}
 												}
@@ -586,10 +586,10 @@ private:
 											if (currValue < bestValue){
 												bestValue = currValue;
 												mossa = m;
+												if (alfabeta > bestValue)
+													goto hell;
+												ab = bestValue;
 											}
-											if (alfabeta > bestValue)
-												goto hell;
-											ab = bestValue;
 										}
 										else if (scacc[(i + 1) * 11 + j] == s1){// due pedine allineate
 											if (scacchiera2.esisteCella(i + 2, j)){
@@ -602,10 +602,10 @@ private:
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
+														if (alfabeta > bestValue)
+															goto hell;
+														ab = bestValue;
 													}
-													if (alfabeta > bestValue)
-														goto hell;
-													ab = bestValue;
 												}
 												else if (scacc[(i + 2) * 11 + j] == s2 && (scacchiera2.esisteCella(i + 3, j) && (scacc[(i + 3) * 11 + j] == 1 || scacc[(i + 3) * 11 + j] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
 													scacFuturaClass = scacchiera2;
@@ -616,10 +616,10 @@ private:
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
+														if (alfabeta > bestValue)
+															goto hell;
+														ab = bestValue;
 													}
-													if (alfabeta > bestValue)
-														goto hell;
-													ab = bestValue;
 												}
 												else if (scacc[(i + 2) * 11 + j] == s1){//tre pedine allineate
 													if (scacchiera2.esisteCella(i + 3, j)){
@@ -632,10 +632,10 @@ private:
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
+																if (alfabeta > bestValue)
+																	goto hell;
+																ab = bestValue;
 															}
-															if (alfabeta > bestValue)
-																goto hell;
-															ab = bestValue;
 														}
 														else if (scacc[(i + 3) * 11 + j] == s2 && scacchiera2.esisteCella(i + 4, j)){//c'e' avversario
 															if (scacc[(i + 4) * 11 + j] == 1){
@@ -647,10 +647,10 @@ private:
 																if (currValue < bestValue){
 																	bestValue = currValue;
 																	mossa = m;
+																	if (alfabeta > bestValue)
+																		goto hell;
+																	ab = bestValue;
 																}
-																if (alfabeta > bestValue)
-																	goto hell;
-																ab = bestValue;
 															}
 															else if (scacc[(i + 4) * 11 + j] == s2){
 																if (scacchiera2.esisteCella(i + 5, j) && scacc[(i + 5) * 11 + j] == 1){
@@ -662,10 +662,10 @@ private:
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
+																		if (alfabeta > bestValue)
+																			goto hell;
+																		ab = bestValue;
 																	}
-																	if (alfabeta > bestValue)
-																		goto hell;
-																	ab = bestValue;
 																}
 																else if (scacc[(i + 5) * 11 + j] == 0){
 																	scacFuturaClass = scacchiera2;
@@ -676,10 +676,10 @@ private:
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
+																		if (alfabeta > bestValue)
+																			goto hell;
+																		ab = bestValue;
 																	}
-																	if (alfabeta > bestValue)
-																		goto hell;
-																	ab = bestValue;
 																}
 															}
 														}
@@ -692,10 +692,10 @@ private:
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
+																if (alfabeta > bestValue)
+																	goto hell;
+																ab = bestValue;
 															}
-															if (alfabeta > bestValue)
-																goto hell;
-															ab = bestValue;
 														}
 													}
 												}
@@ -715,10 +715,10 @@ private:
 											if (currValue < bestValue){
 												bestValue = currValue;
 												mossa = m;
+												if (alfabeta > bestValue)
+													goto hell;
+												ab = bestValue;
 											}
-											if (alfabeta > bestValue)
-												goto hell;
-											ab = bestValue;
 										}
 										else if (scacc[(i + 1) * 11 + j + 1] == s1){// due pedine allineate
 											if (scacchiera2.esisteCella(i + 2, j + 2)){
@@ -731,10 +731,10 @@ private:
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
+														if (alfabeta > bestValue)
+															goto hell;
+														ab = bestValue;
 													}
-													if (alfabeta > bestValue)
-														goto hell;
-													ab = bestValue;
 												}
 												else if (scacc[(i + 2) * 11 + j + 2] == s2 && (scacchiera2.esisteCella(i + 3, j + 3) && (scacc[(i + 3) * 11 + j + 3] == 1 || scacc[(i + 3) * 11 + j + 3] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
 													scacFuturaClass = scacchiera2;
@@ -745,10 +745,10 @@ private:
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
+														if (alfabeta > bestValue)
+															goto hell;
+														ab = bestValue;
 													}
-													if (alfabeta > bestValue)
-														goto hell;
-													ab = bestValue;
 												}
 												else if (scacc[(i + 2) * 11 + j + 2] == 1){//tre pedine allineate
 													if (scacchiera2.esisteCella(i + 3, j + 3)){
@@ -761,10 +761,10 @@ private:
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
+																if (alfabeta > bestValue)
+																	goto hell;
+																ab = bestValue;
 															}
-															if (alfabeta > bestValue)
-																goto hell;
-															ab = bestValue;
 														}
 														else if (scacc[(i + 3) * 11 + j + 3] == s2 && scacchiera2.esisteCella(i + 4, j + 4)){//c'e' avversario
 															if (scacc[(i + 4) * 11 + j + 4] == 1){
@@ -776,10 +776,10 @@ private:
 																if (currValue < bestValue){
 																	bestValue = currValue;
 																	mossa = m;
+																	if (alfabeta > bestValue)
+																		goto hell;
+																	ab = bestValue;
 																}
-																if (alfabeta > bestValue)
-																	goto hell;
-																ab = bestValue;
 															}
 															else if (scacc[(i + 4) * 11 + j + 4] == s2){
 																if (scacchiera2.esisteCella(i + 5, j + 5) && scacc[(i + 5) * 11 + j + 5] == 1){
@@ -791,10 +791,10 @@ private:
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
+																		if (alfabeta > bestValue)
+																			goto hell;
+																		ab = bestValue;
 																	}
-																	if (alfabeta > bestValue)
-																		goto hell;
-																	ab = bestValue;
 																}
 																else if (scacc[(i + 5) * 11 + j + 5] == 0){
 																	scacFuturaClass = scacchiera2;
@@ -805,10 +805,10 @@ private:
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
+																		if (alfabeta > bestValue)
+																			goto hell;
+																		ab = bestValue;
 																	}
-																	if (alfabeta > bestValue)
-																		goto hell;
-																	ab = bestValue;
 																}
 															}
 														}
@@ -821,10 +821,10 @@ private:
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
+																if (alfabeta > bestValue)
+																	goto hell;
+																ab = bestValue;
 															}
-															if (alfabeta > bestValue)
-																goto hell;
-															ab = bestValue;
 														}
 													}
 												}
@@ -844,10 +844,10 @@ private:
 											if (currValue < bestValue){
 												bestValue = currValue;
 												mossa = m;
+												if (alfabeta > bestValue)
+													goto hell;
+												ab = bestValue;
 											}
-											if (alfabeta > bestValue)
-												goto hell;
-											ab = bestValue;
 										}
 										else if (scacc[i * 11 + j + 1] == s1){// due pedine allineate
 											if (scacchiera2.esisteCella(i, j + 2)){
@@ -860,10 +860,10 @@ private:
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
+														if (alfabeta > bestValue)
+															goto hell;
+														ab = bestValue;
 													}
-													if (alfabeta > bestValue)
-														goto hell;
-													ab = bestValue;
 												}
 												else if (scacc[i * 11 + j + 2] == s2 && (scacchiera2.esisteCella(i, j + 3) && (scacc[i * 11 + j + 3] == 1 || scacc[i * 11 + j + 3] == 0))){//NOTA: if annestati per controllare una sola volta esistenza celle per i-3, i-4 ecc ecc
 													scacFuturaClass = scacchiera2;
@@ -874,10 +874,10 @@ private:
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
+														if (alfabeta > bestValue)
+															goto hell;
+														ab = bestValue;
 													}
-													if (alfabeta > bestValue)
-														goto hell;
-													ab = bestValue;
 												}
 												else if (scacc[i * 11 + j + 2] == 1){//tre pedine allineate
 													if (scacchiera2.esisteCella(i, j + 3)){
@@ -890,10 +890,10 @@ private:
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
+																if (alfabeta > bestValue)
+																	goto hell;
+																ab = bestValue;
 															}
-															if (alfabeta > bestValue)
-																goto hell;
-															ab = bestValue;
 														}
 														else if (scacc[i * 11 + j + 3] == s2 && scacchiera2.esisteCella(i, j + 4)){//c'e' avversario
 															if (scacc[i * 11 + j + 4] == 1){
@@ -905,10 +905,10 @@ private:
 																if (currValue < bestValue){
 																	bestValue = currValue;
 																	mossa = m;
+																	if (alfabeta > bestValue)
+																		goto hell;
+																	ab = bestValue;
 																}
-																if (alfabeta > bestValue)
-																	goto hell;
-																ab = bestValue;
 															}
 															else if (scacc[i * 11 + j + 4] == s2){
 																if (scacchiera2.esisteCella(i, j + 5) && scacc[i * 11 + j + 5] == 1){
@@ -920,10 +920,10 @@ private:
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
+																		if (alfabeta > bestValue)
+																			goto hell;
+																		ab = bestValue;
 																	}
-																	if (alfabeta > bestValue)
-																		goto hell;
-																	ab = bestValue;
 																}
 																else if (scacc[i * 11 + j + 5] == 0){
 																	scacFuturaClass = scacchiera2;
@@ -934,10 +934,10 @@ private:
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
+																		if (alfabeta > bestValue)
+																			goto hell;
+																		ab = bestValue;
 																	}
-																	if (alfabeta > bestValue)
-																		goto hell;
-																	ab = bestValue;
 																}
 															}
 														}
@@ -950,10 +950,10 @@ private:
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
+																if (alfabeta > bestValue)
+																	goto hell;
+																ab = bestValue;
 															}
-															if (alfabeta > bestValue)
-																goto hell;
-															ab = bestValue;
 
 														}
 													}
