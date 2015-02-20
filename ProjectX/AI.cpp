@@ -15,7 +15,7 @@
 #include <ctype.h>
 #include <limits>
 #include <cstring>
-#include <boost/algorithm/string.hpp>
+#include <ctime>
 
 using namespace std;
 static_assert(std::numeric_limits<float>::is_iec559, "IEEE 754 required");
@@ -31,8 +31,6 @@ private:
     const int maxColumn[10] = { 5, 5, 6, 7, 8, 9, 9, 9, 9, 9}; //a che colonna finisce la scacchiera per ogni riga compresa cornice
     short direzioni[6] = {1,2,3,4,5,6};//N,NO,O,S,SE,E
     unordered_map<int, int> distance;
-    //int distance[11][11][11][11];
-    int dist;
     const short white=2, black=3;
     Scacchiera scacchiera;
     
@@ -1000,6 +998,7 @@ public:
      }*/
     
     void distanza(){
+    	int dist;
         for(int i=0; i<11; i++)
             for(int j=0; j<11; j++)
                 for(int k=0; k<11; k++)
