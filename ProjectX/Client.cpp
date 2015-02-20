@@ -12,8 +12,6 @@
 #include <netdb.h>      // Needed for the socket functions
 #include <unistd.h>
 #include <string>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/lexical_cast.hpp>
 #include <chrono>
 #include "AI.cpp"
 #include <locale>
