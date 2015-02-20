@@ -14,3 +14,4 @@ DerivedData
 *.xcuserstate
 *.xcodeproj/
 *.project
+.DS_Store
