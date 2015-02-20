@@ -31,28 +31,20 @@ private:
 	AI* ai;
 	 struct addrinfo host_info;       // The struct that getaddrinfo() fills up with data.
 	 struct addrinfo *host_info_list; // Pointer to the to the linked list of host_info's.
-	 ssize_t bytes_received, bytes_sent;
-        int sockfd, portno, n, tempo;
+	 ssize_t bytes_received, bytes_sent, n;
+        int sockfd, tempo;
         char buffer[256];
 public:
     
     Client(const char* serverAddress, const char* port, int time){
-        int status;
-        
-        
-       
         struct sockaddr_in serv_addr;
         struct hostent *server;
-        
-        
-        
-        portno = 8901;
         
         sockfd = socket(AF_INET, SOCK_STREAM, 0);
         
         if (sockfd < 0)
             error("ERROR opening socket");
-        server = gethostbyname("127.0.0.1");
+        server = gethostbyname(serverAddress);
         if (server == NULL) {
             fprintf(stderr,"ERROR, no such host\n");
             exit(0);
@@ -62,7 +54,7 @@ public:
         bcopy((char *)server->h_addr,
               (char *)&serv_addr.sin_addr.s_addr,
               server->h_length);
-        serv_addr.sin_port = htons(portno);
+        serv_addr.sin_port = htons(atoi(port));
         if (connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0)
             error("ERROR connecting");
         
@@ -192,8 +184,6 @@ int main(int argc, char** argv)
 				cout << time << endl;
 				Client * client = new Client(serverAddr, port, time);
 				client->play();
-				/*string move = ai.generaProssimaMossa(*ai.getScacchiera(), "Black", 3);
-				cout << move << endl;*/
 				delete client;
 				return 0;
 	}

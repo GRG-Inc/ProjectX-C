@@ -125,6 +125,8 @@ private:
 
 	double valutaMossa(Scacchiera scacchiera2, string side1, int depth, double alfabeta, clock_t beginTime, float maxTime) {
 		//numMosse++;
+        double bestValue = std::numeric_limits<double>::infinity(), currValue, ab = alfabeta;
+        string mossa;
 		clock_t currentTime;
 		currentTime = clock();
 		//float cTime = (float)currentTime * 1000 / CLOCKS_PER_SEC;
@@ -133,7 +135,7 @@ private:
 		{
 			short* scacc = scacchiera2.getScacchiera();
 			short s1, s2;
-			string side2, m, mossa;
+            string side2, m; /*mossa*/
 			if (side1.at(1) == 'h'){
 				s1 = white;
 				s2 = black;
@@ -175,7 +177,7 @@ private:
 			}
 			else{
 				//genera configurazione futura
-				double bestValue = std::numeric_limits<double>::infinity(), currValue, ab = alfabeta;
+				//double bestValue = std::numeric_limits<double>::infinity(), currValue, ab = alfabeta;
 				//string m, mossa;
 				Scacchiera scacFuturaClass;
 				//short* scac = scacchiera2.getScacchiera();
@@ -964,11 +966,14 @@ private:
 						}
 					}
 				}
-			hell:
+			/*hell:
 				mossaFinale = mossa;
-				return -bestValue;
+				return -bestValue;*/
 			}
 		}
+    hell:
+        mossaFinale = mossa;
+        return -bestValue;
 	}
 
 public:
