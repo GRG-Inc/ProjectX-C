@@ -966,14 +966,14 @@ private:
 						}
 					}
 				}
-			/*hell:
+			hell:
 				mossaFinale = mossa;
-				return -bestValue;*/
+				return -bestValue;
 			}
 		}
-    hell:
+    /*hell:
         mossaFinale = mossa;
-        return -bestValue;
+        return -bestValue;*/
 	}
 
 public:
