@@ -34,6 +34,7 @@ private:
 	 ssize_t bytes_received, bytes_sent, n;
         int sockfd, tempo;
         char buffer[256];
+        bool home;
 public:
     
     Client(const char* serverAddress, const char* port, int time){
@@ -106,10 +107,14 @@ public:
         
         string colour(col);*/
         string colour;
-        if(buffer[9]=='l')
+        if(buffer[9]=='l'){
+        	home=true;
             colour="black";
-        else
+        }
+        else{
             colour="white";
+            home=false;
+        }
         
         char* msg = new char[256];
         
@@ -144,9 +149,10 @@ public:
                 break;
             }
             else if(startsWith(buffer, (char*)"YOUR_TURN")){
-               your_turn: cout << "Entro in YOUR_TURN" << endl;
-                string move = ai->generaProssimaMossa(*ai->getScacchiera(), colour, tempo);
-                cout << "La tua mossa è: " << move << endl;
+               your_turn:
+			   	//cout << "Entro in YOUR_TURN" << endl;
+                string move = ai->generaProssimaMossa(*ai->getScacchiera(), colour, tempo, home);
+                //cout << "La tua mossa è: " << move << endl;
                 
                 int i;
                 for(i=0;i<8; i++){
@@ -155,11 +161,11 @@ public:
                 msg[i] = 0;
                 
                 sprintf(buffer, "MOVE %s\n", msg);
-                printf("Sto per inviare la mossa: %s\n", buffer);
+                //printf("Sto per inviare la mossa: %s\n", buffer);
                 
 
                 n = write(sockfd,buffer,strlen(buffer));
-                
+                cout << "La tua mossa è: " << move << endl;
                 ai->convertiStringaMossa(move);
             }
             else if(startsWith(buffer, (char*)"TIMEOUT")){

@@ -123,7 +123,7 @@ private:
     		return 2;
     	}
 
-	double valutaMossa(Scacchiera scacchiera2, string side1, int depth, double alfabeta, clock_t beginTime, float maxTime) {
+	double valutaMossa(Scacchiera scacchiera2, string side1, int depth, double alfabeta, clock_t beginTime, float maxTime, bool home) {
 		//numMosse++;
         double bestValue = std::numeric_limits<double>::infinity(), currValue, ab = alfabeta;
         string mossa;
@@ -149,7 +149,12 @@ private:
 
 			if (depth == 0){
 				//assegna valore a configurazione corrente
-				double w1 = 1, w2 = 1, w3 = 1, w4 = 50; //pesi
+				double w1 = 1, w2 = 1, w3 = 2, w4 = 3;
+				if(home)
+					{
+						w3 = 4;
+						w4 = 6; //pesi
+					}
 				double centerDist = 0, coesione = 0, premioCatt = 0, penaleCatt = 0;
 				if (s1 == 2){
 					//FIXME // mangia 7 pedine bianche e da errore
@@ -165,12 +170,12 @@ private:
 						if (scacc[i * 11 + j] == s1){
 							std::unordered_map<int, int>::const_iterator got = distance.find(i * 1000 + j * 100 + 5 * 10 + 5);
 							centerDist += 2 / ((got->second) + 1);
-							coesione += calcolaCoesione(scacc, i, j);
+							coesione += 2*calcolaCoesione(scacc, i, j);
 						}
 						else if (scacc[i * 11 + j] == s2){
 							std::unordered_map<int, int>::const_iterator got = distance.find(i * 1000 + j * 100 + 5 * 10 + 5);
-							centerDist -= 5 / ((got->second) + 1);
-							coesione -= 1.5*calcolaCoesione(scacc, i, j);
+							centerDist -= 2 / ((got->second) + 1);
+							coesione -= 2*calcolaCoesione(scacc, i, j);
 						}
 					}
 				return (w1*centerDist) + (w2*coesione) + (w3*premioCatt) - (w4*penaleCatt);
@@ -193,7 +198,7 @@ private:
 											//scacFutura = scacFuturaClass.getScacchiera();
 											scacFuturaClass.aggiornaScacchiera(i, j, i, j, i - 1, j, i - 1, j);
 											m = generaStringaMossa(i, j, i, j, i - 1, j, i - 1, j);
-											currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+											currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 											if (currValue < bestValue){
 												bestValue = currValue;
 												mossa = m;
@@ -209,7 +214,7 @@ private:
 													//scacFutura = scacFuturaClass.getScacchiera();
 													scacFuturaClass.aggiornaScacchiera(i - 1, j, i, j, i - 2, j, i - 1, j);//indici invertiti per avere indici mossa ordinati correttaete per tutto il caso NORD
 													m = generaStringaMossa(i - 1, j, i, j, i - 2, j, i - 1, j);
-													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
@@ -223,7 +228,7 @@ private:
 													//scacFutura = scacFuturaClass.getScacchiera();
 													scacFuturaClass.aggiornaScacchiera(i - 1, j, i, j, i - 2, j, i - 1, j);
 													m = generaStringaMossa(i - 1, j, i, j, i - 2, j, i - 1, j);
-													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
@@ -239,7 +244,7 @@ private:
 															//scacFutura = scacFuturaClass.getScacchiera();
 															scacFuturaClass.aggiornaScacchiera(i - 2, j, i, j, i - 3, j, i - 1, j);
 															m = generaStringaMossa(i - 2, j, i, j, i - 3, j, i - 1, j);
-															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
@@ -254,7 +259,7 @@ private:
 																//scacFutura = scacFuturaClass.getScacchiera();
 																scacFuturaClass.aggiornaScacchiera(i - 2, j, i, j, i - 3, j, i - 1, j);
 																m = generaStringaMossa(i - 2, j, i, j, i - 3, j, i - 1, j);
-																currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																if (currValue < bestValue){
 																	bestValue = currValue;
 																	mossa = m;
@@ -269,7 +274,7 @@ private:
 																	//scacFutura = scacFuturaClass.getScacchiera();
 																	scacFuturaClass.aggiornaScacchiera(i - 2, j, i, j, i - 3, j, i - 1, j);
 																	m = generaStringaMossa(i - 2, j, i, j, i - 3, j, i - 1, j);
-																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
@@ -283,7 +288,7 @@ private:
 																	//scacFutura = scacFuturaClass.getScacchiera();
 																	scacFuturaClass.aggiornaScacchiera(i - 2, j, i, j, i - 3, j, i - 1, j);
 																	m = generaStringaMossa(i - 2, j, i, j, i - 3, j, i - 1, j);
-																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
@@ -299,7 +304,7 @@ private:
 															//scacFutura = scacFuturaClass.getScacchiera();
 															scacFuturaClass.aggiornaScacchiera(i - 2, j, i, j, i - 3, j, i - 1, j);
 															m = generaStringaMossa(i - 2, j, i, j, i - 3, j, i - 1, j);
-															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
@@ -322,7 +327,7 @@ private:
 											//scacFutura = scacFuturaClass.getScacchiera();
 											scacFuturaClass.aggiornaScacchiera(i, j, i, j, i - 1, j - 1, i - 1, j - 1);
 											m = generaStringaMossa(i, j, i, j, i - 1, j - 1, i - 1, j - 1);
-											currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+											currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 											if (currValue < bestValue){
 												bestValue = currValue;
 												mossa = m;
@@ -338,7 +343,7 @@ private:
 													//scacFutura = scacFuturaClass.getScacchiera();
 													scacFuturaClass.aggiornaScacchiera(i - 1, j - 1, i, j, i - 2, j - 2, i - 1, j - 1); //indici NO inertiti per lo stesso motivo del NORD
 													m = generaStringaMossa(i - 1, j - 1, i, j, i - 2, j - 2, i - 1, j - 1);
-													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
@@ -352,7 +357,7 @@ private:
 													//scacFutura = scacFuturaClass.getScacchiera();
 													scacFuturaClass.aggiornaScacchiera(i - 1, j - 1, i, j, i - 2, j - 2, i - 1, j - 1);
 													m = generaStringaMossa(i - 1, j - 1, i, j, i - 2, j - 2, i - 1, j - 1);
-													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
@@ -368,7 +373,7 @@ private:
 															//scacFutura = scacFuturaClass.getScacchiera();
 															scacFuturaClass.aggiornaScacchiera(i - 2, j - 2, i, j, i - 3, j - 3, i - 1, j - 1);
 															m = generaStringaMossa(i - 2, j - 2, i, j, i - 3, j - 3, i - 1, j - 1);
-															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
@@ -383,7 +388,7 @@ private:
 																//scacFutura = scacFuturaClass.getScacchiera();
 																scacFuturaClass.aggiornaScacchiera(i - 2, j - 2, i, j, i - 3, j - 3, i - 1, j - 1);
 																m = generaStringaMossa(i - 2, j - 2, i, j, i - 3, j - 3, i - 1, j - 1);
-																currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																if (currValue < bestValue){
 																	bestValue = currValue;
 																	mossa = m;
@@ -398,7 +403,7 @@ private:
 																	//scacFutura = scacFuturaClass.getScacchiera();
 																	scacFuturaClass.aggiornaScacchiera(i - 2, j - 2, i, j, i - 3, j - 3, i - 1, j - 1);
 																	m = generaStringaMossa(i - 2, j - 2, i, j, i - 3, j - 3, i - 1, j - 1);
-																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
@@ -412,7 +417,7 @@ private:
 																	//scacFutura = scacFuturaClass.getScacchiera();
 																	scacFuturaClass.aggiornaScacchiera(i - 2, j - 2, i, j, i - 3, j - 3, i - 1, j - 1);
 																	m = generaStringaMossa(i - 2, j - 2, i, j, i - 3, j - 3, i - 1, j - 1);
-																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
@@ -428,7 +433,7 @@ private:
 															//scacFutura = scacFuturaClass.getScacchiera();
 															scacFuturaClass.aggiornaScacchiera(i - 2, j - 2, i, j, i - 3, j - 3, i - 1, j - 1);
 															m = generaStringaMossa(i - 2, j - 2, i, j, i - 3, j - 3, i - 1, j - 1);
-															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
@@ -452,7 +457,7 @@ private:
 											//scacFutura = scacFuturaClass.getScacchiera();
 											scacFuturaClass.aggiornaScacchiera(i, j, i, j, i, j - 1, i, j - 1);
 											m = generaStringaMossa(i, j, i, j, i, j - 1, i, j - 1);
-											currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+											currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 											if (currValue < bestValue){
 												bestValue = currValue;
 												mossa = m;
@@ -468,7 +473,7 @@ private:
 													//scacFutura = scacFuturaClass.getScacchiera();
 													scacFuturaClass.aggiornaScacchiera(i, j - 1, i, j, i, j - 2, i, j - 1);
 													m = generaStringaMossa(i, j - 1, i, j, i, j - 2, i, j - 1);
-													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
@@ -482,7 +487,7 @@ private:
 													//scacFutura = scacFuturaClass.getScacchiera();
 													scacFuturaClass.aggiornaScacchiera(i, j - 1, i, j, i, j - 2, i, j - 1);
 													m = generaStringaMossa(i, j - 1, i, j, i, j - 2, i, j - 1);
-													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
@@ -498,7 +503,7 @@ private:
 															//scacFutura = scacFuturaClass.getScacchiera();
 															scacFuturaClass.aggiornaScacchiera(i, j - 2, i, j, i, j - 3, i, j - 1);
 															m = generaStringaMossa(i, j - 2, i, j, i, j - 3, i, j - 1);
-															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
@@ -513,7 +518,7 @@ private:
 																//scacFutura = scacFuturaClass.getScacchiera();
 																scacFuturaClass.aggiornaScacchiera(i, j - 2, i, j, i, j - 3, i, j - 1);// da controllare
 																m = generaStringaMossa(i, j - 2, i, j, i, j - 3, i, j - 1);
-																currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																if (currValue < bestValue){
 																	bestValue = currValue;
 																	mossa = m;
@@ -528,7 +533,7 @@ private:
 																	//scacFutura = scacFuturaClass.getScacchiera();
 																	scacFuturaClass.aggiornaScacchiera(i, j - 2, i, j, i, j - 3, i, j - 1);// da controllare, la pedina avversaria non viene toccata
 																	m = generaStringaMossa(i, j - 2, i, j, i, j - 3, i, j - 1);
-																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
@@ -542,7 +547,7 @@ private:
 																	//scacFutura = scacFuturaClass.getScacchiera();
 																	scacFuturaClass.aggiornaScacchiera(i, j - 2, i, j, i, j - 3, i, j - 1);// da controllare, la pedina avversaria non viene toccata
 																	m = generaStringaMossa(i, j - 2, i, j, i, j - 3, i, j - 1);
-																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
@@ -558,7 +563,7 @@ private:
 															//scacFutura = scacFuturaClass.getScacchiera();
 															scacFuturaClass.aggiornaScacchiera(i, j - 2, i, j, i, j - 3, i, j - 1);// da controllare
 															m = generaStringaMossa(i, j - 2, i, j, i, j - 3, i, j - 1);
-															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
@@ -582,7 +587,7 @@ private:
 											//scacFutura = scacFuturaClass.getScacchiera();
 											scacFuturaClass.aggiornaScacchiera(i, j, i, j, i + 1, j, i + 1, j);
 											m = generaStringaMossa(i, j, i, j, i + 1, j, i + 1, j);
-											currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+											currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 											if (currValue < bestValue){
 												bestValue = currValue;
 												mossa = m;
@@ -598,7 +603,7 @@ private:
 													//scacFutura = scacFuturaClass.getScacchiera();
 													scacFuturaClass.aggiornaScacchiera(i, j, i + 1, j, i + 1, j, i + 2, j);// da controllare
 													m = generaStringaMossa(i, j, i + 1, j, i + 1, j, i + 2, j);
-													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
@@ -612,7 +617,7 @@ private:
 													//scacFutura = scacFuturaClass.getScacchiera();
 													scacFuturaClass.aggiornaScacchiera(i, j, i + 1, j, i + 1, j, i + 2, j);// da controllare, la pedina avversaria non viene toccata
 													m = generaStringaMossa(i, j, i + 1, j, i + 1, j, i + 2, j);
-													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
@@ -628,7 +633,7 @@ private:
 															//scacFutura = scacFuturaClass.getScacchiera();
 															scacFuturaClass.aggiornaScacchiera(i, j, i + 2, j, i + 1, j, i + 3, j);// da controllare
 															m = generaStringaMossa(i, j, i + 2, j, i + 1, j, i + 3, j);
-															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
@@ -643,7 +648,7 @@ private:
 																//scacFutura = scacFuturaClass.getScacchiera();
 																scacFuturaClass.aggiornaScacchiera(i, j, i + 2, j, i + 1, j, i + 3, j);// da controllare
 																m = generaStringaMossa(i, j, i + 2, j, i + 1, j, i + 3, j);
-																currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																if (currValue < bestValue){
 																	bestValue = currValue;
 																	mossa = m;
@@ -658,7 +663,7 @@ private:
 																	//scacFutura = scacFuturaClass.getScacchiera();
 																	scacFuturaClass.aggiornaScacchiera(i, j, i + 2, j, i + 1, j, i + 3, j);// da controllare, la pedina avversaria non viene toccata
 																	m = generaStringaMossa(i, j, i + 2, j, i + 1, j, i + 3, j);
-																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
@@ -672,7 +677,7 @@ private:
 																	//scacFutura = scacFuturaClass.getScacchiera();
 																	scacFuturaClass.aggiornaScacchiera(i, j, i + 2, j, i + 1, j, i + 3, j);// da controllare, la pedina avversaria non viene toccata
 																	m = generaStringaMossa(i, j, i + 2, j, i + 1, j, i + 3, j);
-																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
@@ -688,7 +693,7 @@ private:
 															//scacFutura = scacFuturaClass.getScacchiera();
 															scacFuturaClass.aggiornaScacchiera(i, j, i + 2, j, i + 1, j, i + 3, j);// da controllare
 															m = generaStringaMossa(i, j, i + 2, j, i + 1, j, i + 3, j);
-															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
@@ -711,7 +716,7 @@ private:
 											//scacFutura = scacFuturaClass.getScacchiera();
 											scacFuturaClass.aggiornaScacchiera(i, j, i, j, i + 1, j + 1, i + 1, j + 1);
 											m = generaStringaMossa(i, j, i, j, i + 1, j + 1, i + 1, j + 1);
-											currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+											currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 											if (currValue < bestValue){
 												bestValue = currValue;
 												mossa = m;
@@ -727,7 +732,7 @@ private:
 												if (scacc[(i + 2) * 11 + j + 2] == 1){// la cella controllata e' vuota quindi mi sposto li'
 													scacFuturaClass.aggiornaScacchiera(i, j, i + 1, j + 1, i + 1, j + 1, i + 2, j + 2);// da controllare
 													m = generaStringaMossa(i, j, i + 1, j + 1, i + 1, j + 1, i + 2, j + 2);
-													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
@@ -741,7 +746,7 @@ private:
 													//scacFutura = scacFuturaClass.getScacchiera();
 													scacFuturaClass.aggiornaScacchiera(i, j, i + 1, j + 1, i + 1, j + 1, i + 2, j + 2);// da controllare, la pedina avversaria non viene toccata
 													m = generaStringaMossa(i, j, i + 1, j + 1, i + 1, j + 1, i + 2, j + 2);
-													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
@@ -757,7 +762,7 @@ private:
 															//scacFutura = scacFuturaClass.getScacchiera();
 															scacFuturaClass.aggiornaScacchiera(i, j, i + 2, j + 2, i + 1, j + 1, i + 3, j + 3);// da controllare
 															m = generaStringaMossa(i, j, i + 2, j + 2, i + 1, j + 1, i + 3, j + 3);
-															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
@@ -772,7 +777,7 @@ private:
 																//scacFutura = scacFuturaClass.getScacchiera();
 																scacFuturaClass.aggiornaScacchiera(i, j, i + 2, j + 2, i + 1, j + 1, i + 3, j + 3);// da controllare
 																m = generaStringaMossa(i, j, i + 2, j + 2, i + 1, j + 1, i + 3, j + 3);
-																currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																if (currValue < bestValue){
 																	bestValue = currValue;
 																	mossa = m;
@@ -787,7 +792,7 @@ private:
 																	//scacFutura = scacFuturaClass.getScacchiera();
 																	scacFuturaClass.aggiornaScacchiera(i, j, i + 2, j + 2, i + 1, j + 1, i + 3, j + 3);// da controllare, la pedina avversaria non viene toccata
 																	m = generaStringaMossa(i, j, i + 2, j + 2, i + 1, j + 1, i + 3, j + 3);
-																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
@@ -801,7 +806,7 @@ private:
 																	//scacFutura = scacFuturaClass.getScacchiera();
 																	scacFuturaClass.aggiornaScacchiera(i, j, i + 2, j + 2, i + 1, j + 1, i + 3, j + 3);// da controllare, la pedina avversaria non viene toccata
 																	m = generaStringaMossa(i, j, i + 2, j + 2, i + 1, j + 1, i + 3, j + 3);
-																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
@@ -817,7 +822,7 @@ private:
 															//scacFutura = scacFuturaClass.getScacchiera();
 															scacFuturaClass.aggiornaScacchiera(i, j, i + 2, j + 2, i + 1, j + 1, i + 3, j + 3);// da controllare
 															m = generaStringaMossa(i, j, i + 2, j + 2, i + 1, j + 1, i + 3, j + 3);
-															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
@@ -840,7 +845,7 @@ private:
 											//scacFutura = scacFuturaClass.getScacchiera();
 											scacFuturaClass.aggiornaScacchiera(i, j, i, j, i, j + 1, i, j + 1);
 											m = generaStringaMossa(i, j, i, j, i, j + 1, i, j + 1);
-											currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+											currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 											if (currValue < bestValue){
 												bestValue = currValue;
 												mossa = m;
@@ -856,7 +861,7 @@ private:
 													//scacFutura = scacFuturaClass.getScacchiera();
 													scacFuturaClass.aggiornaScacchiera(i, j, i, j + 1, i, j + 1, i, j + 2);// da controllare
 													m = generaStringaMossa(i, j, i, j + 1, i, j + 1, i, j + 2);
-													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
@@ -870,7 +875,7 @@ private:
 													//scacFutura = scacFuturaClass.getScacchiera();
 													scacFuturaClass.aggiornaScacchiera(i, j, i, j + 1, i, j + 1, i, j + 2);// da controllare, la pedina avversaria non viene toccata
 													m = generaStringaMossa(i, j, i, j + 1, i, j + 1, i, j + 2);
-													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+													currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 													if (currValue < bestValue){
 														bestValue = currValue;
 														mossa = m;
@@ -886,7 +891,7 @@ private:
 															//scacFutura = scacFuturaClass.getScacchiera();
 															scacFuturaClass.aggiornaScacchiera(i, j, i, j + 2, i, j + 1, i, j + 3);// da controllare
 															m = generaStringaMossa(i, j, i, j + 2, i, j + 1, i, j + 3);
-															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
@@ -901,7 +906,7 @@ private:
 																//scacFutura = scacFuturaClass.getScacchiera();
 																scacFuturaClass.aggiornaScacchiera(i, j, i, j + 2, i, j + 1, i, j + 3);// da controllare
 																m = generaStringaMossa(i, j, i, j + 2, i, j + 1, i, j + 3);
-																currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																if (currValue < bestValue){
 																	bestValue = currValue;
 																	mossa = m;
@@ -916,7 +921,7 @@ private:
 																	//scacFutura = scacFuturaClass.getScacchiera();
 																	scacFuturaClass.aggiornaScacchiera(i, j, i, j + 2, i, j + 1, i, j + 3);// da controllare, la pedina avversaria non viene toccata
 																	m = generaStringaMossa(i, j, i, j + 2, i, j + 1, i, j + 3);
-																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
@@ -930,7 +935,7 @@ private:
 																	//scacFutura = scacFuturaClass.getScacchiera();
 																	scacFuturaClass.aggiornaScacchiera(i, j, i, j + 2, i, j + 1, i, j + 3);// da controllare, la pedina avversaria non viene toccata
 																	m = generaStringaMossa(i, j, i, j + 2, i, j + 1, i, j + 3);
-																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+																	currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 																	if (currValue < bestValue){
 																		bestValue = currValue;
 																		mossa = m;
@@ -946,7 +951,7 @@ private:
 															//scacFutura = scacFuturaClass.getScacchiera();
 															scacFuturaClass.aggiornaScacchiera(i, j, i, j + 2, i, j + 1, i, j + 3);// da controllare
 															m = generaStringaMossa(i, j, i, j + 2, i, j + 1, i, j + 3);
-															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime);
+															currValue = valutaMossa(scacFuturaClass, side2, depth - 1, ab == -(std::numeric_limits<double>::infinity()) ? ab : -ab, beginTime, maxTime, home);
 															if (currValue < bestValue){
 																bestValue = currValue;
 																mossa = m;
@@ -1027,11 +1032,11 @@ public:
         return sb;
     }
     
-    string generaProssimaMossa(Scacchiera &s, string side, int t){
+    string generaProssimaMossa(Scacchiera &s, string side, int t, bool home){
     		int d = setDepth(t);
     		clock_t beginTime;
     		beginTime = clock();
-    		valutaMossa(s, side, d, -(numeric_limits<double>::infinity()), beginTime, t-t*0.1);
+    		valutaMossa(s, side, d, -(numeric_limits<double>::infinity()), beginTime, t-t*0.1, home);
     		return mossaFinale;
     	}
     
