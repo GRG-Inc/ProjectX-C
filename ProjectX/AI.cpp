@@ -203,7 +203,7 @@ private:
 												bestValue = currValue;
 												mossa = m;
 												if (alfabeta > bestValue)
-													goto hell;
+													goto flag;
 												ab = bestValue;
 											}
 										}
@@ -219,7 +219,7 @@ private:
 														bestValue = currValue;
 														mossa = m;
 														if (alfabeta > bestValue)
-															goto hell;
+															goto flag;
 														ab = bestValue;
 													}
 												}
@@ -233,7 +233,7 @@ private:
 														bestValue = currValue;
 														mossa = m;
 														if (alfabeta > bestValue)
-															goto hell;
+															goto flag;
 														ab = bestValue;
 													}
 												}
@@ -249,7 +249,7 @@ private:
 																bestValue = currValue;
 																mossa = m;
 																if (alfabeta > bestValue)
-																	goto hell;
+																	goto flag;
 																ab = bestValue;
 															}
 														}
@@ -264,7 +264,7 @@ private:
 																	bestValue = currValue;
 																	mossa = m;
 																	if (alfabeta > bestValue)
-																		goto hell;
+																		goto flag;
 																	ab = bestValue;
 																}
 															}
@@ -279,7 +279,7 @@ private:
 																		bestValue = currValue;
 																		mossa = m;
 																		if (alfabeta > bestValue)
-																			goto hell;
+																			goto flag;
 																		ab = bestValue;
 																	}
 																}
@@ -293,7 +293,7 @@ private:
 																		bestValue = currValue;
 																		mossa = m;
 																		if (alfabeta > bestValue)
-																			goto hell;
+																			goto flag;
 																		ab = bestValue;
 																	}
 																}
@@ -309,7 +309,7 @@ private:
 																bestValue = currValue;
 																mossa = m;
 																if (alfabeta > bestValue)
-																	goto hell;
+																	goto flag;
 																ab = bestValue;
 															}
 														}
@@ -332,7 +332,7 @@ private:
 												bestValue = currValue;
 												mossa = m;
 												if (alfabeta > bestValue)
-													goto hell;
+													goto flag;
 												ab = bestValue;
 											}
 										}
@@ -348,7 +348,7 @@ private:
 														bestValue = currValue;
 														mossa = m;
 														if (alfabeta > bestValue)
-															goto hell;
+															goto flag;
 														ab = bestValue;
 													}
 												}
@@ -362,7 +362,7 @@ private:
 														bestValue = currValue;
 														mossa = m;
 														if (alfabeta > bestValue)
-															goto hell;
+															goto flag;
 														ab = bestValue;
 													}
 												}
@@ -378,7 +378,7 @@ private:
 																bestValue = currValue;
 																mossa = m;
 																if (alfabeta > bestValue)
-																	goto hell;
+																	goto flag;
 																ab = bestValue;
 															}
 														}
@@ -393,7 +393,7 @@ private:
 																	bestValue = currValue;
 																	mossa = m;
 																	if (alfabeta > bestValue)
-																		goto hell;
+																		goto flag;
 																	ab = bestValue;
 																}
 															}
@@ -408,7 +408,7 @@ private:
 																		bestValue = currValue;
 																		mossa = m;
 																		if (alfabeta > bestValue)
-																			goto hell;
+																			goto flag;
 																		ab = bestValue;
 																	}
 																}
@@ -422,7 +422,7 @@ private:
 																		bestValue = currValue;
 																		mossa = m;
 																		if (alfabeta > bestValue)
-																			goto hell;
+																			goto flag;
 																		ab = bestValue;
 																	}
 																}
@@ -438,7 +438,7 @@ private:
 																bestValue = currValue;
 																mossa = m;
 																if (alfabeta > bestValue)
-																	goto hell;
+																	goto flag;
 																ab = bestValue;
 															}
 														}
@@ -462,7 +462,7 @@ private:
 												bestValue = currValue;
 												mossa = m;
 												if (alfabeta > bestValue)
-													goto hell;
+													goto flag;
 												ab = bestValue;
 											}
 										}
@@ -478,7 +478,7 @@ private:
 														bestValue = currValue;
 														mossa = m;
 														if (alfabeta > bestValue)
-															goto hell;
+															goto flag;
 														ab = bestValue;
 													}
 												}
@@ -492,7 +492,7 @@ private:
 														bestValue = currValue;
 														mossa = m;
 														if (alfabeta > bestValue)
-															goto hell;
+															goto flag;
 														ab = bestValue;
 													}
 												}
@@ -508,7 +508,7 @@ private:
 																bestValue = currValue;
 																mossa = m;
 																if (alfabeta > bestValue)
-																	goto hell;
+																	goto flag;
 																ab = bestValue;
 															}
 														}
@@ -523,7 +523,7 @@ private:
 																	bestValue = currValue;
 																	mossa = m;
 																	if (alfabeta > bestValue)
-																		goto hell;
+																		goto flag;
 																	ab = bestValue;
 																}
 															}
@@ -538,7 +538,7 @@ private:
 																		bestValue = currValue;
 																		mossa = m;
 																		if (alfabeta > bestValue)
-																			goto hell;
+																			goto flag;
 																		ab = bestValue;
 																	}
 																}
@@ -552,7 +552,7 @@ private:
 																		bestValue = currValue;
 																		mossa = m;
 																		if (alfabeta > bestValue)
-																			goto hell;
+																			goto flag;
 																		ab = bestValue;
 																	}
 																}
@@ -568,7 +568,7 @@ private:
 																bestValue = currValue;
 																mossa = m;
 																if (alfabeta > bestValue)
-																	goto hell;
+																	goto flag;
 																ab = bestValue;
 															}
 														}
@@ -592,7 +592,7 @@ private:
 												bestValue = currValue;
 												mossa = m;
 												if (alfabeta > bestValue)
-													goto hell;
+													goto flag;
 												ab = bestValue;
 											}
 										}
@@ -608,7 +608,7 @@ private:
 														bestValue = currValue;
 														mossa = m;
 														if (alfabeta > bestValue)
-															goto hell;
+															goto flag;
 														ab = bestValue;
 													}
 												}
@@ -622,7 +622,7 @@ private:
 														bestValue = currValue;
 														mossa = m;
 														if (alfabeta > bestValue)
-															goto hell;
+															goto flag;
 														ab = bestValue;
 													}
 												}
@@ -638,7 +638,7 @@ private:
 																bestValue = currValue;
 																mossa = m;
 																if (alfabeta > bestValue)
-																	goto hell;
+																	goto flag;
 																ab = bestValue;
 															}
 														}
@@ -653,7 +653,7 @@ private:
 																	bestValue = currValue;
 																	mossa = m;
 																	if (alfabeta > bestValue)
-																		goto hell;
+																		goto flag;
 																	ab = bestValue;
 																}
 															}
@@ -668,7 +668,7 @@ private:
 																		bestValue = currValue;
 																		mossa = m;
 																		if (alfabeta > bestValue)
-																			goto hell;
+																			goto flag;
 																		ab = bestValue;
 																	}
 																}
@@ -682,7 +682,7 @@ private:
 																		bestValue = currValue;
 																		mossa = m;
 																		if (alfabeta > bestValue)
-																			goto hell;
+																			goto flag;
 																		ab = bestValue;
 																	}
 																}
@@ -698,7 +698,7 @@ private:
 																bestValue = currValue;
 																mossa = m;
 																if (alfabeta > bestValue)
-																	goto hell;
+																	goto flag;
 																ab = bestValue;
 															}
 														}
@@ -721,7 +721,7 @@ private:
 												bestValue = currValue;
 												mossa = m;
 												if (alfabeta > bestValue)
-													goto hell;
+													goto flag;
 												ab = bestValue;
 											}
 										}
@@ -737,7 +737,7 @@ private:
 														bestValue = currValue;
 														mossa = m;
 														if (alfabeta > bestValue)
-															goto hell;
+															goto flag;
 														ab = bestValue;
 													}
 												}
@@ -751,7 +751,7 @@ private:
 														bestValue = currValue;
 														mossa = m;
 														if (alfabeta > bestValue)
-															goto hell;
+															goto flag;
 														ab = bestValue;
 													}
 												}
@@ -767,7 +767,7 @@ private:
 																bestValue = currValue;
 																mossa = m;
 																if (alfabeta > bestValue)
-																	goto hell;
+																	goto flag;
 																ab = bestValue;
 															}
 														}
@@ -782,7 +782,7 @@ private:
 																	bestValue = currValue;
 																	mossa = m;
 																	if (alfabeta > bestValue)
-																		goto hell;
+																		goto flag;
 																	ab = bestValue;
 																}
 															}
@@ -797,7 +797,7 @@ private:
 																		bestValue = currValue;
 																		mossa = m;
 																		if (alfabeta > bestValue)
-																			goto hell;
+																			goto flag;
 																		ab = bestValue;
 																	}
 																}
@@ -811,7 +811,7 @@ private:
 																		bestValue = currValue;
 																		mossa = m;
 																		if (alfabeta > bestValue)
-																			goto hell;
+																			goto flag;
 																		ab = bestValue;
 																	}
 																}
@@ -827,7 +827,7 @@ private:
 																bestValue = currValue;
 																mossa = m;
 																if (alfabeta > bestValue)
-																	goto hell;
+																	goto flag;
 																ab = bestValue;
 															}
 														}
@@ -850,7 +850,7 @@ private:
 												bestValue = currValue;
 												mossa = m;
 												if (alfabeta > bestValue)
-													goto hell;
+													goto flag;
 												ab = bestValue;
 											}
 										}
@@ -866,7 +866,7 @@ private:
 														bestValue = currValue;
 														mossa = m;
 														if (alfabeta > bestValue)
-															goto hell;
+															goto flag;
 														ab = bestValue;
 													}
 												}
@@ -880,7 +880,7 @@ private:
 														bestValue = currValue;
 														mossa = m;
 														if (alfabeta > bestValue)
-															goto hell;
+															goto flag;
 														ab = bestValue;
 													}
 												}
@@ -896,7 +896,7 @@ private:
 																bestValue = currValue;
 																mossa = m;
 																if (alfabeta > bestValue)
-																	goto hell;
+																	goto flag;
 																ab = bestValue;
 															}
 														}
@@ -911,7 +911,7 @@ private:
 																	bestValue = currValue;
 																	mossa = m;
 																	if (alfabeta > bestValue)
-																		goto hell;
+																		goto flag;
 																	ab = bestValue;
 																}
 															}
@@ -926,7 +926,7 @@ private:
 																		bestValue = currValue;
 																		mossa = m;
 																		if (alfabeta > bestValue)
-																			goto hell;
+																			goto flag;
 																		ab = bestValue;
 																	}
 																}
@@ -940,7 +940,7 @@ private:
 																		bestValue = currValue;
 																		mossa = m;
 																		if (alfabeta > bestValue)
-																			goto hell;
+																			goto flag;
 																		ab = bestValue;
 																	}
 																}
@@ -956,7 +956,7 @@ private:
 																bestValue = currValue;
 																mossa = m;
 																if (alfabeta > bestValue)
-																	goto hell;
+																	goto flag;
 																ab = bestValue;
 															}
 
@@ -971,12 +971,12 @@ private:
 						}
 					}
 				}
-			hell:
+			flag:
 				mossaFinale = mossa;
 				return -bestValue;
 			}
 		}
-    /*hell:
+    /*flag:
         mossaFinale = mossa;
         return -bestValue;*/
 	}
