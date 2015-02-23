@@ -132,17 +132,26 @@ public:
                 {
                 	goto your_turn;
                 }
+                else if(buffer[23]=='D' && buffer[24]=='E'){
+                	goto defeat;
+                }
+                else if(buffer[23]=='V' && buffer[24]=='I'){
+                	goto victory;
+                }
+                else if(buffer[23]=='T' && buffer[24]=='I'){
+                	goto tie;
+                }
             }
             else if(startsWith(buffer, (char*)"VICTORY")){
-                cout << "You win" << endl;
+                victory: cout << "You win" << endl;
                 break;
             }
             else if(startsWith(buffer, (char*)"DEFEAT")){
-                cout << "You lose" <<endl;
+               defeat: cout << "You lose" <<endl;
                 break;
             }
             else if(startsWith(buffer, (char*)"TIE")){
-                cout << "You tied" << endl;
+                tie: cout << "You tied" << endl;
                 break;
             }
             else if(startsWith(buffer, (char*)"YOUR_TURN")){
@@ -158,8 +167,7 @@ public:
                 msg[i] = 0;
                 
                 sprintf(buffer, "MOVE %s\n", msg);
-                
-                
+
 
                 n = write(sockfd,buffer,strlen(buffer));
                 cout << "La tua mossa è: " << move << endl;
