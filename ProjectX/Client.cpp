@@ -188,12 +188,16 @@ public:
 };
 
 int main(int argc, char** argv)
-	{
-	char *serverAddr = argv[1];
-				char *port = argv[2];
-				int time = atoi(argv[3]);
-				Client * client = new Client(serverAddr, port, time);
-				client->play();
-				delete client;
-				return 0;
+{
+	if(argc < 3){
+		cout << "Usage: client <IP ADDRESS> <PORT NUMBER> <TMAX>" << endl;
+		exit(-1);
 	}
+	char *serverAddr = argv[1];
+	char *port = argv[2];
+	int time = atoi(argv[3]);
+	Client * client = new Client(serverAddr, port, time);
+	client->play();
+	delete client;
+	return 0;
+}

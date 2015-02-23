@@ -31,6 +31,7 @@ private:
     const int maxColumn[10] = { 5, 5, 6, 7, 8, 9, 9, 9, 9, 9}; //a che colonna finisce la scacchiera per ogni riga compresa cornice
     unordered_map<int, int> distance;
     const short white=2, black=3;
+    const int NUMERO_DIREZIONI = 6;
     Scacchiera scacchiera;
     
     
@@ -144,7 +145,7 @@ private:
 
 			if (depth == 0){
 				//assegna valore a configurazione corrente
-				double w1 = 1, w2 = 1, w3 = 2, w4 = 3; //pesi
+				double w3 = 2, w4 = 3; //pesi
 				if(home)
 					{
 						w3 = 4;
@@ -172,7 +173,7 @@ private:
 							coesione -= 2*calcolaCoesione(scacc, i, j);
 						}
 					}
-				return (w1*centerDist) + (w2*coesione) + (w3*premioCatt) - (w4*penaleCatt);
+				return centerDist + coesione + (w3*premioCatt) - (w4*penaleCatt);
 			}
 			else{
 				//genera configurazione futura
@@ -183,7 +184,7 @@ private:
 				for (int i = 1; i < 10; i++){
 					for (int j = minColumn[i]; j <= maxColumn[i]; j++){
 						if (scacc[i * 11 + j] == s1){
-							for (int k = 1; k <= 6; k++){
+							for (int k = 1; k <= NUMERO_DIREZIONI; k++){
 								if ( k == 1){//NORD
 									if (scacchiera2.esisteCella(i - 1, j)){
 										if (scacc[(i - 1) * 11 + j] == 1){//una pedina
@@ -1034,46 +1035,3 @@ public:
     			scacchiera.aggiornaScacchiera(i, m, k, n, j, o, l, p);
     	}
 };
-
-//int main(){
-//
-//    Scacchiera s;
-//    string mossa;
-//    string x = " ABCDEFGHI ";
-//    AI ai;
-//    ai.distanza();
-//    short *ptr = ai.getScacchiera()->getScacchiera();
-//    cout << "   1 2 3 4 5 6 7 8 9  " << endl;
-//    for(int i=0; i<11; i++){
-//        cout << x.at(i);
-//        for(int j=0; j<11;j++){
-//            std::cout << ptr[i*11+j];
-//            std::cout << " ";
-//        }
-//        std::cout << "" << std::endl;
-//    }
-//    cout << ptr <<endl;
-//
-//    mossa = ai.generaProssimaMossa(*ai.getScacchiera(), "Black", 3);
-//    cout << "Your move: "+mossa << endl;
-//    while(true){
-//    cout << "Inserisci mossa ";
-//    cin >> mossa;
-//    ai.convertiStringaMossa(mossa);
-//
-//        
-//    cout << "   1 2 3 4 5 6 7 8 9  " << endl;
-//    for(int i=0; i<11; i++){
-//        cout << x.at(i);
-//        for(int j=0; j<11;j++){
-//            std::cout << ptr[i*11+j];
-//            std::cout << " ";
-//        }
-//        std::cout << "" << std::endl;
-//    }
-//        cout << ptr <<endl;
-//        cout << "Pedine nere mangiate " + to_string(ai.getScacchiera()->getNereCatturate()) << endl;
-//        cout << "Pedine bianche mangiate " + to_string(ai.getScacchiera()->getBiancheCatturate()) << endl;
-//    }
-//    return 0;
-//}
