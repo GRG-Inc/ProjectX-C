@@ -16,19 +16,6 @@ using namespace std;
 class Scacchiera {
 private:
     //0= casella non valida, 1=casella vuota, 2=pedina bianca, 3=pedina nera
-     /*char scacchiera[11][11] = {
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 0, 2, 2, 1, 3, 3, 0, 0, 0, 0, 0 }, // A
-        { 0, 2, 2, 2, 3, 3, 3, 0, 0, 0, 0 }, // B
-        { 0, 1, 2, 2, 1, 3, 3, 1, 0, 0, 0 }, // C
-        { 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 }, // D
-        { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, // E
-        { 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0 }, // F
-        { 0, 0, 0, 1, 3, 3, 1, 2, 2, 1, 0 }, // G
-        { 0, 0, 0, 0, 3, 3, 3, 2, 2, 2, 0 }, // H
-        { 0, 0, 0, 0, 0, 3, 3, 1, 2, 2, 0 }, // I
-        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } };*/
-
 
     short scacchiera[121]= {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ,
@@ -184,17 +171,6 @@ private:
     
 public:
     
-//    Scacchiera clona(){
-//        Scacchiera clone = Scacchiera();
-//        for(int i = 0 ; i < 11 ; i++)
-//            for(int j = 0 ; j < 11 ; j++){
-//                clone.scacchiera[i*11+j] = scacchiera[i*11+j];
-//            }
-//        clone.nereCatturate = nereCatturate;
-//        clone.biancheCatturate = biancheCatturate;
-//        return clone;
-//    }
-    
     
     int getBiancheCatturate(){
         return biancheCatturate;
@@ -208,7 +184,7 @@ public:
         return scacchiera;
     }
     
-    bool esisteCella(int riga, int colonna){
+    bool esisteCella(int riga, int colonna){ //verifica se la cella che si sta visitando fa parte effettivamente delle 61 della scacchiera di Abalone
         return (riga >= 1 && riga <= 9 && colonna >= minColumn[riga] && colonna<= maxColumn[riga]);
     }
     

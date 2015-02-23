@@ -29,10 +29,10 @@ private:
     const short costiCattura[14] = { 0, 8, 12, 16, 24, 36, 100, 100, 100, 100, 100, 100, 100, 100 };
     const int minColumn[10] = { 1, 1, 1, 1, 1, 1, 2, 3, 4, 5}; //da che colonna inizia la scacchiera per ogni riga compresa cornice
     const int maxColumn[10] = { 5, 5, 6, 7, 8, 9, 9, 9, 9, 9}; //a che colonna finisce la scacchiera per ogni riga compresa cornice
-    short direzioni[6] = {1,2,3,4,5,6};//N,NO,O,S,SE,E
     unordered_map<int, int> distance;
     const short white=2, black=3;
     Scacchiera scacchiera;
+    
     
     int calcolaDistanza(int i, int j, int k, int l){
         int col = j-l;
@@ -70,7 +70,6 @@ private:
     }
     
     int corrispondenza(char indice) {
-        //char x = char(toupper(indice));
         switch(toupper(indice)){
             case 'A':
                 return 1;
@@ -124,8 +123,6 @@ private:
     	}
 
 	double valutaMossa(Scacchiera scacchiera2, string side1, int depth, double alfabeta, clock_t beginTime, float maxTime, bool home) {
-        double bestValue = std::numeric_limits<double>::infinity(), currValue, ab = alfabeta;
-        string mossa;
 		clock_t currentTime;
 		currentTime = clock();
 		float elapsedTime = ((float)(currentTime - beginTime) * 1000) / CLOCKS_PER_SEC;
@@ -133,7 +130,7 @@ private:
 		{
 			short* scacc = scacchiera2.getScacchiera();
 			short s1, s2;
-            string side2, m;
+            string side2;
 			if (side1.at(1) == 'h'){
 				s1 = white;
 				s2 = black;
@@ -179,16 +176,16 @@ private:
 			}
 			else{
 				//genera configurazione futura
-				//double bestValue = std::numeric_limits<double>::infinity(), currValue, ab = alfabeta;
-				//string m, mossa;
+				double bestValue = std::numeric_limits<double>::infinity(), currValue, ab = alfabeta;
+				string m, mossa;
 				Scacchiera scacFuturaClass;
-				//short* scac = scacchiera2.getScacchiera();
+                
 				for (int i = 1; i < 10; i++){
 					for (int j = minColumn[i]; j <= maxColumn[i]; j++){
 						if (scacc[i * 11 + j] == s1){
 							for (int k = 1; k <= 6; k++){
 								if ( k == 1){//NORD
-									if (scacchiera2.esisteCella(i - 1, j)){//FIXME
+									if (scacchiera2.esisteCella(i - 1, j)){
 										if (scacc[(i - 1) * 11 + j] == 1){//una pedina
 											scacFuturaClass = scacchiera2;
 											 
@@ -317,7 +314,7 @@ private:
 								}
 								else if ( k == 2){
 									//NORD-OVEST
-									if (scacchiera2.esisteCella(i - 1, j - 1)){//FIXME
+									if (scacchiera2.esisteCella(i - 1, j - 1)){
 										if (scacc[(i - 1) * 11 + j - 1] == 1){//una pedina
 											scacFuturaClass = scacchiera2;
 											 
@@ -447,7 +444,7 @@ private:
 								}
 								else if ( k == 3){
 									//OVEST
-									if (scacchiera2.esisteCella(i, j - 1)){//FIXME
+									if (scacchiera2.esisteCella(i, j - 1)){
 										if (scacc[i * 11 + j - 1] == 1){//una pedina
 											scacFuturaClass = scacchiera2;
 											 
@@ -577,7 +574,7 @@ private:
 								}
 								else if ( k == 4){
 									//SUD
-									if (scacchiera2.esisteCella(i + 1, j)){//FIXME
+									if (scacchiera2.esisteCella(i + 1, j)){
 										if (scacc[(i + 1) * 11 + j] == 1){//una pedina
 											scacFuturaClass = scacchiera2;
 											 
@@ -706,7 +703,7 @@ private:
 								}
 								else if ( k == 5){
 									//SUD-EST
-									if (scacchiera2.esisteCella(i + 1, j + 1)){//FIXME
+									if (scacchiera2.esisteCella(i + 1, j + 1)){
 										if (scacc[(i + 1) * 11 + j + 1] == 1){//una pedina
 											scacFuturaClass = scacchiera2;
 											 
@@ -835,7 +832,7 @@ private:
 								}
 								else{
 									//EST
-									if (scacchiera2.esisteCella(i, j + 1)){//FIXME
+									if (scacchiera2.esisteCella(i, j + 1)){
 										if (scacc[i * 11 + j + 1] == 1){//una pedina
 											scacFuturaClass = scacchiera2;
 											 
@@ -972,9 +969,6 @@ private:
 				return -bestValue;
 			}
 		}
-    /*flag:
-        mossaFinale = mossa;
-        return -bestValue;*/
 	}
 
 public:
@@ -1008,7 +1002,6 @@ public:
         sb+=to_string(n);
         sb+=(corrispondenzaR(o));
         sb+=to_string(p);
-        //cout << "Mossa di generaStringaMossa(): "+ sb << endl;
         return sb;
     }
     
@@ -1033,7 +1026,6 @@ public:
     		int p = vm[7] - '0';
     		if (i>k && m > n)
     			scacchiera.aggiornaScacchiera(k, n, i, m, l, p, j, o);
-    		//cout << "Mossa di convertiStringaMossa() "+mossa << endl;
     		else if (i==k && m>n)
     			scacchiera.aggiornaScacchiera(i, n, k, m, j, p, l, o);
     		else if (i>k && m==n)

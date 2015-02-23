@@ -101,11 +101,8 @@ public:
         
         if(startsWith(buffer, (char*)"WELCOME"))
             printf(buffer);
+
         
-        /*char* col = new char[6];
-        substr(buffer, 8, col);
-        
-        string colour(col);*/
         string colour;
         if(buffer[9]=='l'){
         	home=true;
@@ -121,7 +118,7 @@ public:
         while(true){
             bzero(buffer,256);
             n = read(sockfd,buffer,255);
-            //printf(buffer);
+            
             
             if(startsWith(buffer, (char*)"VALID_MOVE"))
                 cout << "Valid move, please wait" << endl;
@@ -150,9 +147,9 @@ public:
             }
             else if(startsWith(buffer, (char*)"YOUR_TURN")){
                your_turn:
-			   	//cout << "Entro in YOUR_TURN" << endl;
+                
                 string move = ai->generaProssimaMossa(*ai->getScacchiera(), colour, tempo, home);
-                //cout << "La tua mossa è: " << move << endl;
+                
                 
                 int i;
                 for(i=0;i<8; i++){
@@ -161,7 +158,7 @@ public:
                 msg[i] = 0;
                 
                 sprintf(buffer, "MOVE %s\n", msg);
-                //printf("Sto per inviare la mossa: %s\n", buffer);
+                
                 
 
                 n = write(sockfd,buffer,strlen(buffer));
