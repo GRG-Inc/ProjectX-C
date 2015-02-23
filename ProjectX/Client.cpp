@@ -184,7 +184,6 @@ int main(int argc, char** argv)
 	char *serverAddr = argv[1];
 				char *port = argv[2];
 				int time = atoi(argv[3]);
-				cout << time << endl;
 				Client * client = new Client(serverAddr, port, time);
 				client->play();
 				delete client;
